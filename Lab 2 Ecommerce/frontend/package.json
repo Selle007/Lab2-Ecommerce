@@ -14,5 +14,8 @@
     "nuxt": "^3.4.1",
     "postcss": "^8.4.23",
     "tailwindcss": "^3.3.1"
+  },
+  "dependencies": {
+    "vue-router": "^4.1.6"
   }
 }
