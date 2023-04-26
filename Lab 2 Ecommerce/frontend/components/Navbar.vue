@@ -1,35 +1,35 @@
 <template>
     <header aria-label="Site Header" class="bg-white">
       <div class="mx-auto flex h-16 max-w-screen items-center gap-8 px-4 sm:px-6 lg:px-8 border ">
-        <NuxtLink  class="block text-emerald-600" href="/">
+        <a class="block text-emerald-600" href="/">
           <img class="h-8" viewBox="0 0 28 24" fill="none" src="../assets/images/logo.png" />
-        </NuxtLink >
+        </a>
   
         <div class="flex flex-1 items-center justify-between">
           <nav aria-label="Site Nav" class="hidden md:block">
             <ul class="flex items-center gap-6 text-sm ">
               <li>
-                <NuxtLink to="/" class="text-gray-900 transition hover:text-emerald-600" >
+                <a class="text-gray-900 transition hover:text-emerald-600" href="/">
                   Home
-                </NuxtLink>
+                </a>
               </li>
   
               <li>
-                <NuxtLink class="text-gray-900 transition hover:text-emerald-600" to="/productList">
+                <a class="text-gray-900 transition hover:text-emerald-600" href="/productList">
                   Products
-                </NuxtLink>
+                </a>
               </li>
   
               <li>
-                <NuxtLink class="text-gray-900 transition hover:text-emerald-600" to="/about">
+                <a class="text-gray-900 transition hover:text-emerald-600" href="/about">
                   About
-                </NuxtLink>
+                </a>
               </li>
   
               <li>
-                <NuxtLink class="text-gray-900 transition hover:text-emerald-600" href="/contact">
+                <a class="text-gray-900 transition hover:text-emerald-600" href="/contact">
                   Contact
-                </NuxtLink>
+                </a>
               </li>
             </ul>
           </nav>
@@ -56,16 +56,16 @@
   
           <div class="flex items-center gap-4">
             <div class="sm:flex sm:gap-4">
-              <nuxt-link 
-                class="hidden rounded-md bg-gray-100 px-5 py-2.5 text-sm text font-medium text-white transition hover:text-emerald-600/75 sm:block"
-                to="/register">
+              <a 
+                class="hidden rounded-md bg-gray-100 px-5 py-2.5 text-sm text font-medium text-gray-50 transition hover:text-emerald-600/75 sm:block"
+                href="/register">
                 Register
-              </nuxt-link>
-              <nuxt-link 
+              </a>
+              <a
                 class="block rounded-md bg-emerald-600 px-5 py-2.5 text-sm font-medium text-white transition hover:bg-emerald-700"
-                to="/login">
+                href="/login">
                 Login
-              </nuxt-link>
+              </a>
             </div>
   
             <button class="block rounded bg-gray-100 p-2.5 text-gray-600 transition hover:text-gray-600/75 md:hidden">

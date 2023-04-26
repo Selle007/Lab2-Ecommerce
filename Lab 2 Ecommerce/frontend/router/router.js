@@ -11,6 +11,18 @@ const router = createRouter({
       path: '/about',
       component: () => import('@/pages/about.vue')
     },
+    {
+      path: '/contact',
+      component: () => import('@/pages/contact.vue')
+    },
+    {
+      path: '/register',
+      component: () => import('@/pages/contact.vue')
+    },
+    {
+      path: '/login',
+      component: () => import('@/pages/contact.vue')
+    },
     // add more routes here
   ]
 })
