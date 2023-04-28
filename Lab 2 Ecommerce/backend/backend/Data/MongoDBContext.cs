@@ -1,17 +1,20 @@
 ﻿using MongoDB.Driver;
+using backend.Data;
 
-public class MongoDBContext
+namespace backend.Data
 {
-    private readonly IMongoDatabase _database;
-
-    public MongoDBContext(IConfiguration configuration)
+    public class MongoDBContext
     {
-        var connectionString = configuration.GetConnectionString("MongoDBConnection");
-        var databaseName = "mydatabase"; // Or you can get this value from configuration
+        private readonly IMongoDatabase _database;
 
-        var client = new MongoClient(connectionString);
-        _database = client.GetDatabase(databaseName);
+        public MongoDBContext(string connectionString, string databaseName)
+        {
+            var client = new MongoClient(connectionString);
+            _database = client.GetDatabase(databaseName);
+        }
+
+        //public IMongoCollection<Product> Products => _database.GetCollection<Product>("Products");
+        public IMongoCollection<Category> Categories => _database.GetCollection<Category>("Categories");
+        // Add more collections as needed
     }
-
-    //public IMongoCollection<Product> Products => _database.GetCollection<Product>("products");
 }

@@ -1,11 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿namespace backend.Data;
+using Microsoft.EntityFrameworkCore;
 
 
-namespace backend.Data
-{
-    public class MSSQLContext : DbContext
+    public class MssqlDBContext : DbContext
     {
-        public MSSQLContext(DbContextOptions<MSSQLContext> options)
+        public MssqlDBContext(DbContextOptions<MssqlDBContext> options)
             : base(options)
         {
         }
@@ -14,4 +13,4 @@ namespace backend.Data
 
         // Add more DbSet properties for other MSSQL entities as needed
     }
-}
+

@@ -4,22 +4,18 @@
     <TargetFramework>net6.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <UserSecretsId>aspnet-backend-84C95A36-366D-4FB1-8029-15876F5F3158</UserSecretsId>
+    <UserSecretsId>aspnet-backend-7EE4AEE1-95E1-4E3E-A737-9885612A47D1</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.4" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="6.0.4" />
-    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.4" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.4" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.4">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.1" />
-    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="6.0.0" />
     <PackageReference Include="Microsoft.Identity.Web" Version="1.16.0" />
-    <PackageReference Include="MongoDB.Bson" Version="2.19.1" />
     <PackageReference Include="MongoDB.Driver" Version="2.19.1" />
     <PackageReference Include="MongoDB.Driver.Core" Version="2.19.1" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
