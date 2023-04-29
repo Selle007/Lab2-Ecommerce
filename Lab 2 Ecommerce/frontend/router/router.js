@@ -17,11 +17,15 @@ const router = createRouter({
     },
     {
       path: '/register',
-      component: () => import('@/pages/contact.vue')
+      component: () => import('@/pages/register.vue')
     },
     {
       path: '/login',
-      component: () => import('@/pages/contact.vue')
+      component: () => import('@/pages/login.vue')
+    },
+    {
+      path: '/cart',
+      component: () => import('@/pages/cart.vue')
     },
     // add more routes here
   ]
