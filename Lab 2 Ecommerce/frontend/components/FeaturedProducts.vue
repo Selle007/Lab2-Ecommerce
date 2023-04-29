@@ -10,7 +10,7 @@
               
                 </li> -->
                 <li class="shadow-md border rounded-lg">
-                    <a  class="group relative block overflow-hidden">
+                    <a href="/product" class="group relative block overflow-hidden">
                         <button
                             class="absolute right-4 top-4 z-10 rounded-full bg-white p-1.5 text-gray-900 transition hover:text-gray-900/75">
                             <span class="sr-only">Wishlist</span>

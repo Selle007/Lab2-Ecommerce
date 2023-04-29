@@ -8,6 +8,7 @@
         <div class="flex flex-1 items-center justify-between">
           <nav aria-label="Site Nav" class="hidden md:block">
             <ul class="flex items-center gap-6 text-sm ">
+            
               <li>
                 <a class="text-gray-900 transition hover:text-emerald-600" href="/">
                   Home
@@ -15,7 +16,7 @@
               </li>
   
               <li>
-                <a class="text-gray-900 transition hover:text-emerald-600" href="/productList">
+                <a class="text-gray-900 transition hover:text-emerald-600" href="/products">
                   Products
                 </a>
               </li>
@@ -29,6 +30,21 @@
               <li>
                 <a class="text-gray-900 transition hover:text-emerald-600" href="/contact">
                   Contact
+                </a>
+              </li>
+              <li>
+                <a class="text-gray-900 transition hover:text-emerald-600" href="/cart">
+                  cart
+                </a>
+              </li>
+              <li>
+                <a class="text-gray-900 transition hover:text-emerald-600" href="/checkout">
+                  checkout
+                </a>
+              </li>
+              <li>
+                <a class="text-gray-900 transition hover:text-emerald-600" href="/dashboard">
+                  dashboard
                 </a>
               </li>
             </ul>

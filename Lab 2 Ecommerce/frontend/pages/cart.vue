@@ -12,6 +12,7 @@
             <!-- Cart items -->
             <div>
               <ul class="space-y-4">
+              <!-- v-for goes in li tag -->
                 <li >
                   <a href="/"
                     class="flex items-center gap-4 border rounded-lg px-4 shadow-sm">
