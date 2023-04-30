@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Memo\\Desktop\\backend\\backend\\backend.csproj": {}
+    "C:\\Users\\Memo\\Desktop\\Lab 2\\backend\\backend\\backend.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Memo\\Desktop\\backend\\backend\\backend.csproj": {
+    "C:\\Users\\Memo\\Desktop\\Lab 2\\backend\\backend\\backend.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Memo\\Desktop\\backend\\backend\\backend.csproj",
+        "projectUniqueName": "C:\\Users\\Memo\\Desktop\\Lab 2\\backend\\backend\\backend.csproj",
         "projectName": "backend",
-        "projectPath": "C:\\Users\\Memo\\Desktop\\backend\\backend\\backend.csproj",
+        "projectPath": "C:\\Users\\Memo\\Desktop\\Lab 2\\backend\\backend\\backend.csproj",
         "packagesPath": "C:\\Users\\Memo\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Memo\\Desktop\\backend\\backend\\obj\\",
+        "outputPath": "C:\\Users\\Memo\\Desktop\\Lab 2\\backend\\backend\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Memo\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -44,6 +44,10 @@
               "version": "[6.0.4, )"
             },
             "Microsoft.AspNetCore.Authentication.OpenIdConnect": {
+              "target": "Package",
+              "version": "[6.0.4, )"
+            },
+            "Microsoft.AspNetCore.Identity.EntityFrameworkCore": {
               "target": "Package",
               "version": "[6.0.4, )"
             },

@@ -4,6 +4,8 @@ using Microsoft.Identity.Web;
 using Microsoft.EntityFrameworkCore;
 using MongoDB.Driver;
 using backend.Data;
+using Microsoft.AspNetCore.Identity;
+using backend.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -53,6 +55,21 @@ builder.Services.AddJwtBearerAuthentication(options =>
     };
 });
 */
+
+builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
+    .AddEntityFrameworkStores<MssqlDBContext>()
+    .AddDefaultTokenProviders();
+
+// Set up password requirements
+builder.Services.Configure<IdentityOptions>(options =>
+{
+    options.Password.RequireDigit = true;
+    options.Password.RequireLowercase = true;
+    options.Password.RequireNonAlphanumeric = false;
+    options.Password.RequireUppercase = true;
+    options.Password.RequiredLength = 8;
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
