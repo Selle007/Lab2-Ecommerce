@@ -10,10 +10,10 @@ namespace backend.Data
         public MongoDBContext(string connectionString, string databaseName)
         {
             var client = new MongoClient(connectionString);
-            _database = client.GetDatabase(databaseName);
+            _database = client.GetDatabase("Lab2");
         }
 
-        //public IMongoCollection<Product> Products => _database.GetCollection<Product>("Products");
+        public IMongoCollection<Product> Products => _database.GetCollection<Product>("Products");
         public IMongoCollection<Category> Categories => _database.GetCollection<Category>("Categories");
         // Add more collections as needed
     }
