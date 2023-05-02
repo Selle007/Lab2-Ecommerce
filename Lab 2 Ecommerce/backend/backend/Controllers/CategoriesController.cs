@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using MongoDB.Bson;
 using MongoDB.Driver;
 
 
 namespace backend.Controllers
 {
+    
     [Route("api/[controller]")]
     [ApiController]
     public class CategoriesController : ControllerBase
@@ -16,7 +18,7 @@ namespace backend.Controllers
             var database = client.GetDatabase("Lab2");
             _categories = database.GetCollection<Category>("categories");
         }
-
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Category>>> Get()
         {
