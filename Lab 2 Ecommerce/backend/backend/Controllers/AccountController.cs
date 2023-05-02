@@ -97,6 +97,27 @@ public class AccountController : ControllerBase
         // Return information about the logged out user
         return Ok(new { message = $"User {userEmail} has been logged out." });
     }
+    [Authorize(Roles = "Admin")]
+    [HttpPost("makeAdmin")]
+    public async Task<IActionResult> MakeAdmin(string userId)
+    {
+        var user = await _userManager.FindByIdAsync(userId);
+
+        if (user == null)
+        {
+            return BadRequest("User not found");
+        }
+
+        var result = await _userManager.AddToRoleAsync(user, "Admin");
+
+        if (!result.Succeeded)
+        {
+            return BadRequest(result.Errors);
+        }
+
+        return Ok();
+    }
+
 
 }
 

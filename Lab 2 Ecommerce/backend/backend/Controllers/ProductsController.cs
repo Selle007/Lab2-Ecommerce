@@ -1,4 +1,5 @@
 ﻿using backend.Data;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MongoDB.Bson;
 using MongoDB.Driver;
@@ -54,7 +55,7 @@ namespace backend.Controllers
                 return StatusCode(500, $"Internal server error: {ex}");
             }
         }
-
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<ActionResult<Product>> Post([FromBody] Product product)
         {
@@ -69,7 +70,7 @@ namespace backend.Controllers
                 return StatusCode(500, $"Internal server error: {ex}");
             }
         }
-
+        [Authorize(Roles = "Admin")]
         [HttpPut("{id:length(24)}")]
         public async Task<IActionResult> Put(string id, [FromBody] Product product)
         {
@@ -91,7 +92,7 @@ namespace backend.Controllers
                 return StatusCode(500, $"Internal server error: {ex}");
             }
         }
-
+        [Authorize(Roles = "Admin")]
         [HttpDelete("{id:length(24)}")]
         public async Task<IActionResult> Delete(string id)
         {

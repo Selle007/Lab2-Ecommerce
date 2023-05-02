@@ -18,7 +18,7 @@ namespace backend.Controllers
             var database = client.GetDatabase("Lab2");
             _categories = database.GetCollection<Category>("categories");
         }
-        [Authorize(Roles = "Admin")]
+        
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Category>>> Get()
         {
@@ -50,7 +50,7 @@ namespace backend.Controllers
                 return StatusCode(500, $"Internal server error: {ex}");
             }
         }
-
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<ActionResult<Category>> Post([FromBody] Category category)
         {
@@ -69,7 +69,7 @@ namespace backend.Controllers
 
 
 
-
+        [Authorize(Roles = "Admin")]
         [HttpPut("{id:length(24)}")]
         public async Task<IActionResult> Put(string id, [FromBody] Category categoryIn)
         {
@@ -89,7 +89,7 @@ namespace backend.Controllers
                 return StatusCode(500, $"Internal server error: {ex}");
             }
         }
-
+        [Authorize(Roles = "Admin")]
         [HttpDelete("{id:length(24)}")]
         public async Task<IActionResult> Delete(string id)
         {
