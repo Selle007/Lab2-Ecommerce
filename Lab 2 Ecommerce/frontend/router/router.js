@@ -39,6 +39,10 @@ const router = createRouter({
       path: '/product',
       component: () => import('@/pages/product.vue')
     },
+    {
+      path: '/dashboard/product/create-product',
+      component: () => import('@/pages/dashboard/product/create-product.vue')
+    },
     
     // add more routes here
   ]

@@ -17,14 +17,14 @@
                     <div class="-space-y-px rounded-md shadow-sm">
                         <div>
                             <label for="email-address" class="sr-only">Email address</label>
-                            <input id="email-address" name="email" v-model="email" type="email" autocomplete="email"
+                            <input id="email-address" name="email"  type="email" autocomplete="email"
                                 required=""
                                 class="relative block w-full appearance-none rounded-none rounded-t-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-teal-500 focus:outline-none focus:ring-teal-500 sm:text-sm"
                                 placeholder="Email address" />
                         </div>
                         <div>
                             <label for="password" class="sr-only">Password</label>
-                            <input id="password" name="password" v-model="password" type="password"
+                            <input id="password" name="password"  type="password"
                                 autocomplete="current-password" required=""
                                 class="relative block w-full appearance-none rounded-none rounded-b-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-teal-500 focus:outline-none focus:ring-teal-500 sm:text-sm"
                                 placeholder="Password" />
