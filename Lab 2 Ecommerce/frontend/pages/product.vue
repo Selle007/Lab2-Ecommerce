@@ -248,9 +248,14 @@
     </NuxtLayout>
   </div>
 </template>
+ 
+<script>
+export default {
+  head() {
+    return {
+      layout: false,
+    }
+  },
 
-<script setup>
-definePageMeta({
-  layout: false,
-});
+}
 </script>

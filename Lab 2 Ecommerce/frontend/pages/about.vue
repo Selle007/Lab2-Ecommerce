@@ -31,8 +31,13 @@
   </div>
 </template>
 
-<script setup>
-  definePageMeta({
-    layout: false,
-  });
+<script>
+export default {
+  head() {
+    return {
+      layout: false,
+    }
+  },
+
+}
 </script>
