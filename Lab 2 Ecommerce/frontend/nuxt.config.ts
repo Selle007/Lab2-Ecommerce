@@ -1,7 +1,7 @@
 
 
 export default defineNuxtConfig({
-  
+ 
   css: ['~/assets/css/main.css'],
   postcss: {
     plugins: {
@@ -9,5 +9,10 @@ export default defineNuxtConfig({
       autoprefixer: {},
     },
   },
+  head: {
+    script: [
+      { src: '~/assets/main.js', type: 'text/javascript', body: true }
+    ]
+  }
   
 })

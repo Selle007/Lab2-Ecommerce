@@ -1,127 +1,88 @@
 <template>
-    <header aria-label="Site Header" class="bg-white">
-      <div class="mx-auto flex h-16 max-w-screen items-center gap-8 px-4 sm:px-6 lg:px-8 border ">
-        <a class="block text-emerald-600" href="/">
-          <img class="h-8" viewBox="0 0 28 24" fill="none" src="../assets/images/logo.png" />
-        </a>
-  
-        <div class="flex flex-1 items-center justify-between">
-          <nav aria-label="Site Nav" class="hidden md:block">
-            <ul class="flex items-center gap-6 text-sm ">
-            
-              <li>
-                <a class="text-gray-900 transition hover:text-emerald-600" href="/">
-                  Home
-                </a>
-              </li>
-  
-              <li>
-                <a class="text-gray-900 transition hover:text-emerald-600" href="/products">
-                  Products
-                </a>
-              </li>
-  
-              <li>
-                <a class="text-gray-900 transition hover:text-emerald-600" href="/about">
-                  About
-                </a>
-              </li>
-  
-              <li>
-                <a class="text-gray-900 transition hover:text-emerald-600" href="/contact">
-                  Contact
-                </a>
-              </li>
-              <li>
-                <a class="text-gray-900 transition hover:text-emerald-600" href="/cart">
-                  cart
-                </a>
-              </li>
-              <li>
-                <a class="text-gray-900 transition hover:text-emerald-600" href="/checkout">
-                  checkout
-                </a>
-              </li>
-              <li>
-                <a class="text-gray-900 transition hover:text-emerald-600" href="/dashboard">
-                  dashboard
-                </a>
-              </li>
-            </ul>
-          </nav>
-  
-          <form class="flex justify-center items-center w-24">
-            <label for="default-search" class="mb-2 text-sm font-medium text-gray-900 sr-only">Search</label>
-            <div class="relative">
-              <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none justify-center">
-                <svg aria-hidden="true" class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                  xmlns="http://www.w3.org/2000/svg">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-                </svg>
-              </div>
-              <input type="search" id="default-search"
-                class="block p-4 pl-10 text-sm text-gray-900 border border-emerald-300 rounded-lg bg-gray-50 focus:ring-emerald-500 focus:border-emerald-500 h-9 w-96"
-                placeholder="   Search..." required />
-              <button type="submit"
-                class="text-white absolute right-0 bottom-0 bg-emerald-700 hover:bg-emerald-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2">
-                Search
-              </button>
+    <nav class="bg-white border-gray-200 dark:bg-gray-900">
+        <div class="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl p-4">
+            <a href="https://flowbite.com" class="flex items-center">
+                <img src="../assets/images/logo.png" class="h-8 mr-3" alt="Flowbite Logo" />
+
+            </a>
+            <div class="flex items-center">
+                <a href="tel:38349111222" class="mr-6 text-sm  text-gray-500 dark:text-white hover:text-emerald-600">(383)
+                    49-111-222</a>
+                <a href="/login" class="text-sm  text-emerald-600 dark:text-emerald-500 hover:text-emerald-600">Login</a>
             </div>
-          </form>
-  
-          <div class="flex items-center gap-4">
-            <div class="sm:flex sm:gap-4">
-              <a 
-                class="hidden rounded-md bg-gray-100 px-5 py-2.5 text-sm text font-medium text-gray-50 transition hover:text-emerald-600/75 sm:block"
-                href="/register">
-                Register
-              </a>
-              <a
-                class="block rounded-md bg-emerald-600 px-5 py-2.5 text-sm font-medium text-white transition hover:bg-emerald-700"
-                href="/login">
-                Login
-              </a>
-            </div>
-  
-            <button class="block rounded bg-gray-100 p-2.5 text-gray-600 transition hover:text-gray-600/75 md:hidden">
-              <span class="sr-only">Toggle menu</span>
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"
-                stroke-width="2">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
-              </svg>
-            </button>
-          </div>
         </div>
-      </div>
-    </header>
-  
+    </nav>
+    <nav class="bg-gray-50 dark:bg-gray-700">
+        <div class="max-w-screen-xl px-4 py-3 mx-auto">
+            <div class="flex justify-center">
+                <ul class="flex flex-row  text-center font-medium mt-0 mr-6 space-x-8 text-sm">
+                    <li>
+                        <a href="/" class="text-gray-900 dark:text-white hover:text-emerald-600"
+                            aria-current="page">Home</a>
+                    </li>
+                    <li>
+                        <Menu as="div" class="relative text-left">
+                            <div>
+                                <MenuButton
+                                    class="inline-flex justify-center text-gray-900 transition hover:text-emerald-600">
+                                    Products
+                                </MenuButton>
+                            </div>
 
-  </template>
+                            <transition enter-active-class="transition ease-out duration-100"
+                                enter-from-class="transform opacity-0 scale-95"
+                                enter-to-class="transform opacity-100 scale-100"
+                                leave-active-class="transition ease-in duration-75"
+                                leave-from-class="transform opacity-100 scale-100"
+                                leave-to-class="transform opacity-0 scale-95">
+                                <MenuItems
+                                    class="absolute z-10 mt-2 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                                    <div class="py-1">
+                                        <MenuItem >
+                                        <a href="`/category/${category._id}`" :class="[
+                                            active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
+                                            'block px-4 py-2 text-sm hover:text-emerald-600',
+                                        ]">TEST</a>
+                                        </MenuItem>
+                                    </div>
+                                </MenuItems>
+                            </transition>
+                        </Menu>
+                    </li>
+                    <li>
+                        <a href="/about" class="text-gray-900 dark:text-white hover:text-emerald-600">About</a>
+                    </li>
+                    <li>
+                        <a href="/contact" class="text-gray-900 dark:text-white hover:text-emerald-600">Contact</a>
+                    </li>
+                    <li>
+                        <a href="/dashboard" class="text-gray-900 dark:text-white hover:text-emerald-600">Dashboard</a>
+                    </li>
+                    <li>
+                        <a href="/cart" class="text-gray-900 dark:text-white hover:text-emerald-600">cart</a>
+                    </li>
+                    <li>
+                        <a href="/checkout" class="text-gray-900 dark:text-white hover:text-emerald-600">checkout</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</template>
   
-  <script>
+<script>
+import { Menu, MenuButton, MenuItems, MenuItem } from '@headlessui/vue'
 
-  </script>
+export default {
+  components: {
+    Menu,
+    MenuButton,
+    MenuItem,
+    MenuItems,
+  },
+
+};
+</script>
   
-  <style scoped>
-  .navbar {
-    overflow: hidden;
-    background-color: #fff;
-    position: fixed;
-    left: 0;
-    top: 0;
-  }
-  
-  nav {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    flex-direction: row;
-  }
-  
-  a {
-    color: #000;
-    text-decoration: none;
-  }
-  </style>
+<style scoped></style>
   
