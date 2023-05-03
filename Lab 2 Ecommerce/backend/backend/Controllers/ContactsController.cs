@@ -1,9 +1,13 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using MongoDB.Bson;
 using MongoDB.Driver;
 
 namespace backend.Controllers
 {
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+
     [Route("api/[controller]")]
     [ApiController]
     public class ContactsController : ControllerBase
@@ -15,6 +19,7 @@ namespace backend.Controllers
             var database = client.GetDatabase("Lab2");
             _contacts = database.GetCollection<Contact>("contacts");
         }
+        [AllowAnonymous]
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Contact>>> GetAll()
@@ -29,6 +34,7 @@ namespace backend.Controllers
                 return StatusCode(500, $"Internal server error: {ex}");
             }
         }
+        [AllowAnonymous]
 
         [HttpGet("{id}", Name = "GetContact")]
         public async Task<ActionResult<Contact>> GetById(string id)
@@ -49,7 +55,7 @@ namespace backend.Controllers
                 return StatusCode(500, $"Internal server error: {ex}");
             }
         }
-
+        [AllowAnonymous]
         [HttpPost]
         public async Task<ActionResult<Contact>> Create([FromBody] Contact contact)
         {
@@ -64,6 +70,7 @@ namespace backend.Controllers
                 return StatusCode(500, $"Internal server error: {ex}");
             }
         }
+        [Authorize(Roles = "Admin")]
 
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(string id, [FromBody] Contact contact)
@@ -87,6 +94,7 @@ namespace backend.Controllers
                 return StatusCode(500, $"Internal server error: {ex}");
             }
         }
+        [Authorize(Roles = "Admin")]
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(string id)

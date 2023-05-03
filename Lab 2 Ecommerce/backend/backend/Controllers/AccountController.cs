@@ -55,23 +55,35 @@ public class AccountController : ControllerBase
 
         var user = await _userManager.FindByEmailAsync(model.Email);
 
-        var token = GenerateJwtToken(user);
+        var token = await GenerateJwtTokenAsync(user);
 
         return Ok(new { Token = token });
     }
 
-    private string GenerateJwtToken(ApplicationUser user)
+
+    private async Task<string> GenerateJwtTokenAsync(ApplicationUser user)
     {
         var claims = new List<Claim>
+    {
+        new Claim(JwtRegisteredClaimNames.Sub, user.Email),
+        new Claim(JwtRegisteredClaimNames.UniqueName, user.Id),
+        new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+        new Claim(ClaimTypes.NameIdentifier, user.Id),
+        new Claim(ClaimTypes.NameIdentifier, user.Id),
+
+        
+    };
+
+        // Get the user's roles
+        var roles = await _userManager.GetRolesAsync(user);
+        foreach (var role in roles)
         {
-            new Claim(JwtRegisteredClaimNames.Sub, user.Email),
-            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-            new Claim(ClaimTypes.NameIdentifier, user.Id)
-        };
+            claims.Add(new Claim(ClaimTypes.Role, role));
+        }
 
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
         var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-        var expires = DateTime.Now.AddDays(Convert.ToDouble(_configuration["Jwt:ExpireDays"]));
+        var expires = DateTime.Now.AddDays(1);
 
         var token = new JwtSecurityToken(
             _configuration["Jwt:Issuer"],
@@ -83,6 +95,8 @@ public class AccountController : ControllerBase
 
         return new JwtSecurityTokenHandler().WriteToken(token);
     }
+
+
 
     [Authorize]
     [HttpPost("logout")]

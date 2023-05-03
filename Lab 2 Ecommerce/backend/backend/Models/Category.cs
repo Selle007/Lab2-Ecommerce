@@ -9,7 +9,7 @@ public class Category
 
     [BsonElement("name")]
     public string Name { get; set; }
-
+    /*
     [BsonElement("products")]
-    public List<Product> Products { get; set; }
+    public List<Product> Products { get; set; }*/
 }

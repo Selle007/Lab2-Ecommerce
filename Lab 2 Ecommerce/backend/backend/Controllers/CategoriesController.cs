@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MongoDB.Bson;
 using MongoDB.Driver;
@@ -6,7 +7,7 @@ using MongoDB.Driver;
 
 namespace backend.Controllers
 {
-    
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [Route("api/[controller]")]
     [ApiController]
     public class CategoriesController : ControllerBase
@@ -18,7 +19,7 @@ namespace backend.Controllers
             var database = client.GetDatabase("Lab2");
             _categories = database.GetCollection<Category>("categories");
         }
-        
+        [AllowAnonymous]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Category>>> Get()
         {
@@ -32,6 +33,7 @@ namespace backend.Controllers
                 return StatusCode(500, $"Internal server error: {ex}");
             }
         }
+        [AllowAnonymous]
 
         [HttpGet("{id:length(24)}", Name = "GetCategory")]
         public async Task<ActionResult<Category>> Get(string id)

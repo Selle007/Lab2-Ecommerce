@@ -1,4 +1,5 @@
 ﻿using backend.Data;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MongoDB.Bson;
@@ -9,6 +10,7 @@ using System.Threading.Tasks;
 
 namespace backend.Controllers
 {
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [Route("api/[controller]")]
     [ApiController]
     public class ProductsController : ControllerBase
@@ -21,6 +23,7 @@ namespace backend.Controllers
             var database = client.GetDatabase("Lab2");
             _products = database.GetCollection<Product>("products");
         }
+        [AllowAnonymous]
 
         [HttpGet]
         public async Task<ActionResult<List<Product>>> Get()
@@ -35,6 +38,7 @@ namespace backend.Controllers
                 return StatusCode(500, $"Internal server error: {ex}");
             }
         }
+        [AllowAnonymous]
 
         [HttpGet("{id:length(24)}", Name = "GetProduct")]
         public async Task<ActionResult<Product>> GetById(string id)
