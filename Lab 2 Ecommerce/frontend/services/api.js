@@ -38,6 +38,9 @@ export default {
     async getCategories() {
         return api.get('/api/categories')
     },
+    async getCategoryById(id) {
+        return api.get(`/api/categories/${id}`)
+    },
     async createCategory(category) {
         return api.post('/api/categories', category)
     },
