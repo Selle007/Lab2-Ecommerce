@@ -26,11 +26,11 @@
                         </div>
 
                         <div class="rounded-lg bg-white p-8 shadow-lg lg:col-span-3 lg:p-12">
-                            <form action="#"  class="space-y-4">
+                            <form @submit.prevernt="createContact()"  class="space-y-4">
                                 <div>
                                     <label class="sr-only" for="name">Name</label>
                                     <input class="w-full rounded-lg border shadow-md p-3 text-sm" placeholder="Name"
-                                        type="text" id="name"  required />
+                                        type="text" id="name" v-model="message.name" required />
                                 </div>
 
                                 <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
@@ -38,6 +38,7 @@
                                         <label class="sr-only" for="email">Email</label>
                                         <input class="w-full rounded-lg border shadow-md p-3 text-sm"
                                             placeholder="Email address" type="email" id="email"
+                                            v-model="message.email"
                                             required />
                                     </div>
 
@@ -45,7 +46,7 @@
                                         <label class="sr-only" for="phone">Phone</label>
                                         <input class="w-full rounded-lg border shadow-md p-3 text-sm"
                                             placeholder="Phone Number" type="tel" id="phone" 
-                                            required />
+                                            v-model="message.phone" required />
                                     </div>
                                 </div>
 
@@ -55,7 +56,7 @@
                                     <label class="sr-only" for="message">Message</label>
 
                                     <textarea class="w-full rounded-lg border shadow-md p-3 text-sm" placeholder="Message"
-                                        rows="8" id="message"  required></textarea>
+                                    v-model="message.message" rows="8" id="message"  required></textarea>
                                 </div>
 
                                 <div class="mt-4">
@@ -76,12 +77,40 @@
 </template>
 
 <script>
+import api from '@/services/api'
 export default {
   head() {
     return {
       layout: false,
     }
   },
-
+  data() {
+    return {
+      message: {
+        id: 'string',
+        name: '',
+        email:'',
+        phone:'',
+        message:''
+      }
+    }
+  },
+  methods: {
+    async createContact() {
+      try {
+        const response = await api.createContact({
+          id: 'string',
+          name: this.message.name,
+          email: this.message.email,
+          phone: this.message.phone,
+          message: this.message.message
+        })
+        console.log(response.data)
+        window.location.reload()
+      } catch (error) {
+        console.error(error)
+      }
+    },
+  }
 }
 </script>

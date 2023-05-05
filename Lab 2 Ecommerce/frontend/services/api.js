@@ -9,6 +9,9 @@ export default {
     async getProducts() {
         return api.get('/api/products')
     },
+    async getProductsById(id) {
+        return api.get(`/api/products/${id}`)
+    },
     async createProduct(product) {
         return api.post('/api/products', product)
     },
@@ -50,4 +53,23 @@ export default {
     async deleteCategory(id) {
         return api.delete(`/api/categories/${id}`)
     },
+
+    // Contacts
+    async getContacts() {
+        return api.get('/api/contacts')
+    },
+    async getContactById(id) {
+        return api.get(`/api/contacts/${id}`)
+    },
+    async createContact(contact) {
+        return api.post('/api/contacts', contact)
+    },
+    async updateContact(id, contact) {
+        return api.put(`/api/contacts/${id}`, contact)
+    },
+    async deleteContact(id) {
+        return api.delete(`/api/contacts/${id}`)
+    },
+
+
 }
