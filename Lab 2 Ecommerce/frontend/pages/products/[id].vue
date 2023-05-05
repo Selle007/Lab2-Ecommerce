@@ -5,29 +5,25 @@
 
       <section>
         <div class="relative mx-auto max-w-screen-xl px-4 py-8">
-          <div>
-            <h1 class="text-2xl font-bold lg:text-3xl">TEST Name</h1>
-            <p class="mt-1 text-sm text-gray-500">SKU: ID</p>
-          </div>
           <div class="grid gap-8 lg:grid-cols-4 lg:items-start">
             <div class="lg:col-span-3">
               <div class="relative mt-4 flex justify-center">
-                <img src="../assets/images/1.png" alt="Product Image" class="w-1/2 rounded-xl object-cover shadow-lg" />
+                <img src="../../assets/images/1.png" alt="Product Image" class="w-1/2 rounded-xl object-cover shadow-lg" />
 
                 <ul class="mt-1 flex gap-4 flex-col">
                   <li>
-                    <img alt="Tee" src="../assets/images/1.png" class="h-16 w-16 rounded-md object-cover" />
+                    <img alt="Tee" src="../../assets/images/1.png" class="h-16 w-16 rounded-md object-cover" />
                   </li>
 
                   <li>
-                    <img alt="Tee" src="../assets/images/1.png" class="h-16 w-16 rounded-md object-cover" />
+                    <img alt="Tee" src="../../assets/images/1.png" class="h-16 w-16 rounded-md object-cover" />
                   </li>
 
                   <li>
-                    <img alt="Tee" src="../assets/images/1.png" class="h-16 w-16 rounded-md object-cover" />
+                    <img alt="Tee" src="../../assets/images/1.png" class="h-16 w-16 rounded-md object-cover" />
                   </li>
                   <li>
-                    <img alt="Tee" src="../assets/images/1.png" class="h-16 w-16 rounded-md object-cover" />
+                    <img alt="Tee" src="../../assets/images/1.png" class="h-16 w-16 rounded-md object-cover" />
                   </li>
                 </ul>
 
@@ -37,23 +33,30 @@
             <div class="lg:sticky lg:top-0">
               <div class="space-y-4 lg:pt-8">
                 <div>
-                  <legend class="text-lg font-bold">Description</legend>
-                  <p class="mt-1 text-sm text-gray-500"> product.description </p>
+                  <h1 class="text-2xl font-bold lg:text-3xl">{{product.name}}</h1>
+                  
                 </div>
                 <div>
-                  <legend class="text-lg font-bold">Category</legend>
-                  <p class="mt-1 text-sm text-gray-500"> product.category</p>
+                  <p class="mt-1 text-sm text-gray-500">SKU: {{product.id}}</p>
                 </div>
+                <div>
+                  <legend class="text-lg font-bold">Description</legend>
+                  <p class="mt-1 text-sm text-gray-500"> {{ product.description }} </p>
+                </div>
+                <!-- <div>
+                  <legend class="text-lg font-bold">Category</legend>
+                  <p class="mt-1 text-sm text-gray-500">product.categoryId</p>
+                </div> -->
                 <div>
                   <legend class="text-lg font-bold">Stock</legend>
-                  <p class="mt-1 text-sm text-gray-500"> product.stock</p>
+                  <p class="mt-1 text-sm text-gray-500"> {{ product.stock }}</p>
                 </div>
 
                 <div>
-                  <p class="text-xl font-bold">15.00&euro;</p>
+                  <p class="text-xl font-bold">{{product.price}}&euro;</p>
                 </div>
 
-                <button 
+                <button
                   class="block w-full rounded bg-emerald-600 p-4 text-sm font-medium transition hover:scale-105 text-white">
                   Add to Cart </button>
               </div>
@@ -249,13 +252,55 @@
   </div>
 </template>
  
+
 <script>
+import api from '@/services/api'
 export default {
   head() {
     return {
       layout: false,
+
     }
   },
+  data() {
+    return {
+      product: {},
+      Categories: [],
+    };
+  },
+  async mounted() {
+    try {
+      const response = await api.getCategories() // wait for the Promise to resolve
+      this.Categories = response.data
+      console.log(this.Categories);
+    } catch (error) {
+      console.error(error)
+    }
+    try {
+      let productId = this.$route.params.id
+      const response = await api.getProductsById(productId) // wait for the Promise to resolve
+      this.product = response.data
 
+      console.log(this.product);
+      this.loading = false;
+    } catch (error) {
+      console.error(error)
+      this.loading = true;
+    }
+  },
+  methods: {
+    async handleUpdateForm() {
+      const productId = this.product.id;
+      try {
+        const response = await api.updateProduct(productId, this.product);
+        console.log(response);
+        // redirect to the updated product page
+        this.$router.push(`/dashboard/product/list-products`);
+      } catch (error) {
+        console.error(error);
+      }
+    },
+  },
+  
 }
 </script>

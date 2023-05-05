@@ -6,116 +6,42 @@
             </header>
 
             <ul class="grid gap-4 mt-8 sm:grid-cols-2 lg:grid-cols-4">
-                <!-- <li v-for="product in Products" :key="product._id" class="shadow-md border rounded-lg">
-              
-                </li> -->
-                <li class="shadow-md border rounded-lg">
-                    <a href="/product" class="group relative block overflow-hidden">
-                        <button
-                            class="absolute right-4 top-4 z-10 rounded-full bg-white p-1.5 text-gray-900 transition hover:text-gray-900/75">
-                            <span class="sr-only">Wishlist</span>
-
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                                stroke="currentColor" class="h-4 w-4">
-                                <path stroke-linecap="round" stroke-linejoin="round"
-                                    d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
-                            </svg>
-                        </button>
-
-                        <img src="../assets/images/1.png" alt=""
-                            class="h-64 w-full object-cover transition duration-500 group-hover:scale-105 sm:h-72" />
-
-                        <div class="relative border border-gray-100 bg-white p-6 flex flex-col">
-                            <span class="whitespace-nowrap bg-emerald-600 px-3 py-1.5 text-xs font-medium text-white">
-                                Featured
-                            </span>
-                            <h3 class="mt-4 text-lg font-medium text-gray-900">ASD</h3>
-                            <div class="card-content flex-1">
-                                <h3 class="mt-4 text-lg font-medium text-gray-900">123.00&euro;</h3>
-
-                                <form class="mt-4">
-                                    <button 
-                                        class="block w-full rounded bg-emerald-600 p-4 text-sm font-medium transition hover:scale-105 text-white">
-                                       Add to Cart </button>
-                                </form>
-                            </div>
-                        </div>
-                    </a>
-                </li>
-                <li class="shadow-md border rounded-lg">
-                    <a  class="group relative block overflow-hidden">
-                        <button
-                            class="absolute right-4 top-4 z-10 rounded-full bg-white p-1.5 text-gray-900 transition hover:text-gray-900/75">
-                            <span class="sr-only">Wishlist</span>
-
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                                stroke="currentColor" class="h-4 w-4">
-                                <path stroke-linecap="round" stroke-linejoin="round"
-                                    d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
-                            </svg>
-                        </button>
-
-                        <img src="../assets/images/1.png" alt=""
-                            class="h-64 w-full object-cover transition duration-500 group-hover:scale-105 sm:h-72" />
-
-                        <div class="relative border border-gray-100 bg-white p-6 flex flex-col">
-                            <span class="whitespace-nowrap bg-emerald-600 px-3 py-1.5 text-xs font-medium text-white">
-                                Featured
-                            </span>
-                            <h3 class="mt-4 text-lg font-medium text-gray-900">ASD</h3>
-                            <div class="card-content flex-1">
-                                <h3 class="mt-4 text-lg font-medium text-gray-900">123.00&euro;</h3>
-
-                                <form class="mt-4">
-                                    <button 
-                                        class="block w-full rounded bg-emerald-600 p-4 text-sm font-medium transition hover:scale-105 text-white">
-                                       Add to Cart </button>
-                                </form>
-                            </div>
-                        </div>
-                    </a>
-                </li>
-                <li class="shadow-md border rounded-lg">
-                    <a  class="group relative block overflow-hidden">
-                        <button
-                            class="absolute right-4 top-4 z-10 rounded-full bg-white p-1.5 text-gray-900 transition hover:text-gray-900/75">
-                            <span class="sr-only">Wishlist</span>
-
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                                stroke="currentColor" class="h-4 w-4">
-                                <path stroke-linecap="round" stroke-linejoin="round"
-                                    d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
-                            </svg>
-                        </button>
-
-                        <img src="../assets/images/1.png" alt=""
-                            class="h-64 w-full object-cover transition duration-500 group-hover:scale-105 sm:h-72" />
-
-                        <div class="relative border border-gray-100 bg-white p-6 flex flex-col">
-                            <span class="whitespace-nowrap bg-emerald-600 px-3 py-1.5 text-xs font-medium text-white">
-                                Featured
-                            </span>
-                            <h3 class="mt-4 text-lg font-medium text-gray-900">ASD</h3>
-                            <div class="card-content flex-1">
-                                <h3 class="mt-4 text-lg font-medium text-gray-900">123.00&euro;</h3>
-
-                                <form class="mt-4">
-                                    <button 
-                                        class="block w-full rounded bg-emerald-600 p-4 text-sm font-medium transition hover:scale-105 text-white">
-                                       Add to Cart </button>
-                                </form>
-                            </div>
-                        </div>
-                    </a>
+                <li v-for="product in Products" :key="product.id" class="shadow-md border rounded-lg">
+                    <ProductCard :product="product"/>
                 </li>
                 
-                
+
+
             </ul>
         </div>
     </section>
 </template>
 
 <script>
+import ProductCard from '~/components/ProductCard.vue'
+import api from '@/services/api'
+
+export default {
+    components: {
+        ProductCard,
+    },
+    data() {
+        return {
+            Products: [],
+        }
+    },
+    async mounted() {
+        try {
+            const response = await api.getProducts() // wait for the Promise to resolve
+            this.Products = response.data
+            console.log(this.Products);
+            this.loading = false;
+        } catch (error) {
+            console.error(error)
+            this.loading = true;
+        }
+    }
+}
 
 </script>
 

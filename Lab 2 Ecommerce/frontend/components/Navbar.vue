@@ -41,11 +41,11 @@
                                 <MenuItems
                                     class="absolute z-10 mt-2 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                                     <div class="py-1">
-                                        <MenuItem>
-                                        <a href="`/category/${category._id}`" :class="[
+                                        <MenuItem v-slot="{active}" v-for="category in Categories" :key="category.id">
+                                        <a :href="`/category/${category.id}`" :class="[
                                                 active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
                                                 'block px-4 py-2 text-sm hover:text-emerald-600',
-                                            ]">TEST</a>
+                                            ]">{{category.name}}</a>
                                         </MenuItem>
                                     </div>
                                 </MenuItems>
@@ -86,7 +86,8 @@ export default {
     },
     data() {
         return {
-            isLoggedIn: false
+            isLoggedIn: false,
+            Categories:[],
         }
     },
     methods: {
@@ -103,13 +104,19 @@ export default {
             this.$router.push('/login')
         }
     },
-    mounted() {
+    async mounted() {
         if (localStorage.getItem('token')) {
             // user is logged in
             this.isLoggedIn = true;
         } else {
             // user is not logged in
             this.isLoggedIn = false;
+        }
+        try {
+            const response = await api.getCategories();
+            this.Categories = response.data
+        } catch (error) {
+            console.error(error)
         }
     }
 
