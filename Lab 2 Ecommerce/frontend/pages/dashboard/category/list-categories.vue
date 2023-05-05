@@ -46,7 +46,7 @@
                           </svg>
                         </button>
                         <button class="inline-block p-3 text-gray-700 hover:bg-gray-50 hover:text-red-600 focus:relative"
-                          title="Delete Product" @click.prevent="deleteCategory(category.id)" >
+                          title="Delete Product" @click.prevent="deleteCategory(category.id)">
                           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                             stroke="currentColor" class="h-4 w-4">
                             <path stroke-linecap="round" stroke-linejoin="round"
@@ -148,6 +148,8 @@ export default {
   },
   async mounted() {
     try {
+      const token = localStorage.getItem('token');
+        console.log(token);
       const response = await api.getCategories() // wait for the Promise to resolve
       this.Categories = response.data
       console.log(this.Categories);

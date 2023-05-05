@@ -7,19 +7,24 @@ const api = axios.create({
 export default {
     // Products
     async getProducts() {
-        return api.get('/api/products')
+        let token = localStorage.getItem('token');
+        return api.get('/api/products', { headers: { Authorization: `Bearer ${token}` } })
     },
     async getProductsById(id) {
-        return api.get(`/api/products/${id}`)
+        let token = localStorage.getItem('token');
+        return api.get(`/api/products/${id}`, { headers: { Authorization: `Bearer ${token}` } })
     },
     async createProduct(product) {
-        return api.post('/api/products', product)
+        let token = localStorage.getItem('token');
+        return api.post('/api/products', product, { headers: { Authorization: `Bearer ${token}` } })
     },
     async updateProduct(id, product) {
-        return api.put(`/api/products/${id}`, product)
+        let token = localStorage.getItem('token');
+        return api.put(`/api/products/${id}`, product, { headers: { Authorization: `Bearer ${token}` } })
     },
     async deleteProduct(id) {
-        return api.delete(`/api/products/${id}`)
+        let token = localStorage.getItem('token');
+        return api.delete(`/api/products/${id}`, { headers: { Authorization: `Bearer ${token}` } })
     },
 
     // User Management
@@ -34,41 +39,84 @@ export default {
         return api.post('/api/account/logout')
     },
     async makeAdmin(userId) {
-        return api.post(`/api/account/makeAdmin/${userId}`)
+        let token = localStorage.getItem('token');
+        return api.post(`/api/account/makeAdmin/${userId}`, null, { headers: { Authorization: `Bearer ${token}` } })
     },
 
     // Categories
     async getCategories() {
-        return api.get('/api/categories')
+        let token = localStorage.getItem('token');
+        return api.get('/api/categories', { headers: { Authorization: `Bearer ${token}` } })
     },
     async getCategoryById(id) {
-        return api.get(`/api/categories/${id}`)
+        let token = localStorage.getItem('token');
+        return api.get(`/api/categories/${id}`, { headers: { Authorization: `Bearer ${token}` } })
     },
     async createCategory(category) {
-        return api.post('/api/categories', category)
+        let token = localStorage.getItem('token');
+        return api.post('/api/categories', category, { headers: { Authorization: `Bearer ${token}` } })
     },
     async updateCategory(id, category) {
-        return api.put(`/api/categories/${id}`, category)
+        let token = localStorage.getItem('token');
+        return api.put(`/api/categories/${id}`, category, { headers: { Authorization: `Bearer ${token}` } })
     },
     async deleteCategory(id) {
-        return api.delete(`/api/categories/${id}`)
+        let token = localStorage.getItem('token');
+        return api.delete(`/api/categories/${id}`, { headers: { Authorization: `Bearer ${token}` } })
     },
 
     // Contacts
     async getContacts() {
-        return api.get('/api/contacts')
+        let token = localStorage.getItem('token');
+        return api.get('/api/contacts', { headers: { Authorization: `Bearer ${token}` } });
     },
     async getContactById(id) {
-        return api.get(`/api/contacts/${id}`)
+        let token = localStorage.getItem('token');
+        return api.get(`/api/contacts/${id}`, { headers: { Authorization: `Bearer ${token}` } });
     },
     async createContact(contact) {
-        return api.post('/api/contacts', contact)
+        let token = localStorage.getItem('token');
+        return api.post('/api/contacts', contact, { headers: { Authorization: `Bearer ${token}` } });
     },
     async updateContact(id, contact) {
-        return api.put(`/api/contacts/${id}`, contact)
+        let token = localStorage.getItem('token');
+        return api.put(`/api/contacts/${id}`, contact, { headers: { Authorization: `Bearer ${token}` } });
     },
     async deleteContact(id) {
-        return api.delete(`/api/contacts/${id}`)
+        let token = localStorage.getItem('token');
+        return api.delete(`/api/contacts/${id}`, { headers: { Authorization: `Bearer ${token}` } });
+    },
+
+
+    // Get cart items
+    async getCart() {
+        const token = localStorage.getItem('token');
+        return api.get('/api/cart/items', { headers: { Authorization: `Bearer ${token}` } });
+    },
+
+    // Add item to cart
+    async addToCart(cartItem) {
+        const token = localStorage.getItem('token');
+        return api.post('/api/cart/items', cartItem, { headers: { Authorization: `Bearer ${token}` } });
+      },
+      
+
+    // Remove item from cart
+    async removeFromCart(productId) {
+        const token = localStorage.getItem('token');
+        return api.delete(`/api/cart/items/${productId}`, { headers: { Authorization: `Bearer ${token}` } });
+    },
+
+    // Update item quantity in cart
+    async updateCartItemQuantity(productId, quantity) {
+        const token = localStorage.getItem('token');
+        return api.put(`/api/cart/items/${productId}`, { ProductId: productId, Quantity: quantity }, { headers: { Authorization: `Bearer ${token}` } });
+    },
+
+    // Clear cart
+    async clearCart() {
+        const token = localStorage.getItem('token');
+        return api.delete('/api/cart', { headers: { Authorization: `Bearer ${token}` } });
     },
 
 

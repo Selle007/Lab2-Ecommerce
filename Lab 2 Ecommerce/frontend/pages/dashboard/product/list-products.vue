@@ -234,9 +234,14 @@ export default {
 
 
   },
+
+
   methods: {
     async createProduct() {
       try {
+        const token = localStorage.getItem('token');
+        console.log(token);
+
         const response = await api.createProduct({
           id: 'string',
           name: this.product.name,
@@ -246,16 +251,20 @@ export default {
           isFeatured: this.product.isFeatured,
           categoryId: this.product.category,
           image: this.product.image,
-        })
-        console.log(response.data)
-        window.location.reload()
+        });
+
+        console.log(response.data);
+        window.location.reload();
       } catch (error) {
-        console.error(error)
+        console.error(error);
       }
     },
+
+
+
     async deleteProduct(id) {
       try {
-        const response = await api.deleteProduct(id)
+        const response = await api.deleteProduct(id);
         console.log(response)
         window.location.reload()
         console.log(id)
@@ -265,7 +274,8 @@ export default {
         // handle error
       }
     },
-    editProduct: function (id) {
+
+itProduct: function (id) {
       this.$router.push(`/dashboard/product/${id}`);
 
     },
