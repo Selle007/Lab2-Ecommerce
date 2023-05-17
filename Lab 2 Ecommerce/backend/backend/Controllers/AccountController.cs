@@ -67,7 +67,6 @@ public class AccountController : ControllerBase
     {
         new Claim(JwtRegisteredClaimNames.Sub, user.Email),
         new Claim(JwtRegisteredClaimNames.UniqueName, user.Id),
-        new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
         new Claim(ClaimTypes.NameIdentifier, user.Id),
         new Claim(ClaimTypes.NameIdentifier, user.Id),
 
@@ -79,6 +78,7 @@ public class AccountController : ControllerBase
         foreach (var role in roles)
         {
             claims.Add(new Claim(ClaimTypes.Role, role));
+            claims.Add(new Claim(JwtRegisteredClaimNames.Jti, role));
         }
 
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
