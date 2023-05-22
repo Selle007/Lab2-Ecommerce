@@ -1,128 +1,123 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Threading.Tasks;
 using backend.Models;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MongoDB.Driver;
 
 namespace backend.Controllers
 {
-    [Route("api/orders")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [ApiController]
-    public class OrdersController : ControllerBase
+    [Route("api/[controller]")]
+    public class OrderController : ControllerBase
     {
         private readonly IMongoCollection<Order> _orders;
         private readonly IMongoCollection<Cart> _carts;
-        private readonly IMongoCollection<Product> _products;
 
-        public OrdersController(IMongoDatabase database)
+        public OrderController(IMongoClient client)
         {
+            var database = client.GetDatabase("Lab2");
             _orders = database.GetCollection<Order>("orders");
             _carts = database.GetCollection<Cart>("carts");
-            _products = database.GetCollection<Product>("products");
         }
 
-        [HttpPost("{userId}")]
-        public async Task<IActionResult> CreateOrder(string userId, [FromBody] dynamic model)
+        // Place order for authenticated user
+        [HttpPost]
+        public async Task<IActionResult> PlaceOrder()
         {
-            var cart = await _carts.Find(_ => true).FirstOrDefaultAsync();
-            if (cart == null)
+            var authHeader = Request.Headers["Authorization"].FirstOrDefault();
+            if (authHeader == null || !authHeader.StartsWith("Bearer "))
             {
-                return BadRequest(new { message = "Cart not found" });
+                return Unauthorized("Invalid authorization header");
             }
 
-            var items = cart.Items.Select(item => new OrderItem
-            {
-                ProductId = item.ProductId,
-                Name = item.ProductId.Name,
-                Quantity = item.Quantity,
-                Price = item.ProductId.Price,
-                Total = item.Quantity * item.ProductId.Price
-            }).ToList();
+            var token = authHeader.Substring("Bearer ".Length).Trim();
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var jwtToken = tokenHandler.ReadJwtToken(token);
+            var userId = jwtToken.Claims.FirstOrDefault(c => c.Type == "unique_name")?.Value;
 
-            var shippingDetails = new ShippingDetails
+            if (string.IsNullOrEmpty(userId))
             {
-                Name = model.name,
-                Surname = model.surname,
-                City = model.city,
-                Address = model.address,
-                Country = model.country,
-                Phone = model.phone,
-                Email = model.email,
-                ZipCode = model.zipCode
-            };
+                return BadRequest("User Id not found");
+            }
+
+            var cart = await _carts.Find(c => c.UserId == userId).FirstOrDefaultAsync();
+            if (cart == null)
+            {
+                return NotFound("Cart not found");
+            }
+
+            var orderItems = cart.Items.Select(cartItem => new Item
+            {
+                ProductId = cartItem.ProductId,
+                Quantity = cartItem.Quantity,
+                Price = cartItem.Price,
+                Total = cartItem.Price * cartItem.Quantity
+            }).ToList();
 
             var order = new Order
             {
                 UserId = userId,
-                ShippingDetails = shippingDetails,
-                Items = items,
-                Status = "Processing"
+                Items = orderItems,
+                Total = cart.Total,
+                CreatedAt = DateTime.UtcNow
             };
 
             await _orders.InsertOneAsync(order);
+            await _carts.DeleteOneAsync(c => c.UserId == userId);
 
-            foreach (var item in items)
-            {
-                var product = await _products.Find(p => p.Id == item.ProductId).FirstOrDefaultAsync();
-                if (product != null)
-                {
-                    product.Stock -= item.Quantity;
-                    await _products.ReplaceOneAsync(p => p.Id == product.Id, product);
-                }
-            }
-
-            await _carts.UpdateOneAsync(c => c.UserId == userId, Builders<Cart>.Update.Set(c => c.Items, new CartItem[0]));
-
-            return Created("", new { message = "Order created successfully", order });
+            return Ok("Order placed successfully!");
         }
 
 
+        // Get all orders
         [HttpGet]
-        public async Task<IActionResult> GetAllOrders()
+        public async Task<ActionResult<IEnumerable<Order>>> GetAllOrders()
         {
-            var orders = await _orders.Find(_ => true).SortByDescending(o => o.CreatedAt).ToListAsync();
+            var orders = await _orders.Find(_ => true).ToListAsync();
             return Ok(orders);
         }
 
+        // Get orders for authenticated user
+        [HttpGet("user")]
+        public async Task<ActionResult<IEnumerable<Order>>> GetUserOrders()
+        {
+            var authHeader = Request.Headers["Authorization"].FirstOrDefault();
+            if (authHeader == null || !authHeader.StartsWith("Bearer "))
+            {
+                return Unauthorized("Invalid authorization header");
+            }
+
+            var token = authHeader.Substring("Bearer ".Length).Trim();
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var jwtToken = tokenHandler.ReadJwtToken(token);
+            var userId = jwtToken.Claims.FirstOrDefault(c => c.Type == "unique_name")?.Value;
+
+            if (string.IsNullOrEmpty(userId))
+            {
+                return BadRequest("User Id not found");
+            }
+
+            var orders = await _orders.Find(o => o.UserId == userId).ToListAsync();
+            return Ok(orders);
+        }
+
+        // Get order by id
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetOrderById(string id)
+        public async Task<ActionResult<Order>> GetOrderById(string id)
         {
             var order = await _orders.Find(o => o.Id == id).FirstOrDefaultAsync();
             if (order == null)
             {
-                return NotFound(new { message = "Order not found" });
+                return NotFound("Order not found");
             }
 
             return Ok(order);
-        }
-
-        [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateOrderStatus(string id, [FromBody] OrderStatusUpdateModel model)
-        {
-            if (string.IsNullOrEmpty(model.Status) || !new[] { "Processing", "Shipped", "Completed" }.Contains(model.Status))
-            {
-                return BadRequest(new { message = "Invalid status" });
-            }
-
-            var order = await _orders.FindOneAndUpdateAsync(
-                Builders<Order>.Filter.Eq(o => o.Id, id),
-                Builders<Order>.Update.Set(o => o.Status, model.Status),
-                new FindOneAndUpdateOptions<Order> { ReturnDocument = ReturnDocument.After });
-
-            if (order == null)
-            {
-                return NotFound(new { message = "Order not found" });
-            }
-
-            return Ok(new { message = "Order updated successfully", order });
-        }
-
-        [HttpGet("user/{userId}")]
-        public IActionResult GetOrdersByUserId(string userId)
-        {
-            var orders = _orders.Find(o => o.UserId == userId).ToList();
-            return Ok(orders);
         }
     }
 }

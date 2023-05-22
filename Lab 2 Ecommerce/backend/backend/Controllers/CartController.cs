@@ -185,15 +185,24 @@ namespace backend.Controllers
             if (itemToRemove.Quantity > 1)
             {
                 itemToRemove.Quantity--;
+
+                // Update the total by subtracting the price of the removed item
+                cart.Total -= itemToRemove.Price;
+
                 await _carts.ReplaceOneAsync(c => c.UserId == userId, cart);
                 return Ok("Item quantity reduced by 1");
             }
             else
             {
                 cart.Items.Remove(itemToRemove);
+
+                // Update the total by subtracting the price of the removed item
+                cart.Total -= itemToRemove.Price;
+
                 await _carts.ReplaceOneAsync(c => c.UserId == userId, cart);
                 return Ok("Item deleted from cart successfully!");
             }
         }
+
     }
 }

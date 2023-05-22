@@ -21,11 +21,16 @@ namespace backend.Models
         [BsonElement("items")]
         public List<Item> Items { get; set; }
 
+
         [BsonElement("status")]
         public string Status { get; set; }
 
         [BsonElement("created_at")]
         public DateTime CreatedAt { get; set; }
+
+        [BsonElement("total")]
+        [BsonRepresentation(BsonType.Decimal128)]
+        public double Total { get; set; }
     }
 
     public class ShippingDetails
@@ -67,9 +72,10 @@ namespace backend.Models
         public int Quantity { get; set; }
 
         [BsonElement("price")]
-        public decimal Price { get; set; }
+        public double Price { get; set; }
 
         [BsonElement("total")]
-        public decimal Total { get; set; }
+        [BsonRepresentation(BsonType.Decimal128)]
+        public double Total { get; set; }
     }
 }
