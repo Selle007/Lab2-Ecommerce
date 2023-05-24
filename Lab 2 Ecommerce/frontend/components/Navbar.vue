@@ -10,6 +10,8 @@
                     49-111-222</a>
                 <a href="/login" v-if="!isLoggedIn"
                     class="text-sm  text-emerald-600 dark:text-emerald-500 hover:text-emerald-600">Login</a>
+                <a href="/dashboard" v-if="isAdmin"
+                    class="text-sm mr-6 text-gray-600 dark:text-emerald-500 hover:text-emerald-600">Dashboard</a>
                 <a href="/" @click="logout" v-if="isLoggedIn"
                     class="text-sm  text-emerald-600 dark:text-emerald-500 hover:text-emerald-600">Logout</a>
             </div>
@@ -41,11 +43,11 @@
                                 <MenuItems
                                     class="absolute z-10 mt-2 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                                     <div class="py-1">
-                                        <MenuItem v-slot="{active}" v-for="category in Categories" :key="category.id">
+                                        <MenuItem v-slot="{ active }" v-for="category in Categories" :key="category.id">
                                         <a :href="`/category/${category.id}`" :class="[
                                                 active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
                                                 'block px-4 py-2 text-sm hover:text-emerald-600',
-                                            ]">{{category.name}}</a>
+                                            ]">{{ category.name }}</a>
                                         </MenuItem>
                                     </div>
                                 </MenuItems>
@@ -59,13 +61,10 @@
                         <a href="/contact" class="text-gray-900 dark:text-white hover:text-emerald-600">Contact</a>
                     </li>
                     <li>
-                        <a href="/dashboard" class="text-gray-900 dark:text-white hover:text-emerald-600">Dashboard</a>
+                        <a href="/cart" class="text-gray-900 dark:text-white hover:text-emerald-600">Cart</a>
                     </li>
                     <li>
-                        <a href="/cart" class="text-gray-900 dark:text-white hover:text-emerald-600">cart</a>
-                    </li>
-                    <li>
-                        <a href="/checkout" class="text-gray-900 dark:text-white hover:text-emerald-600">checkout</a>
+                        <a href="/dashboard" class="text-gray-900 dark:text-white hover:text-emerald-600">checkout</a>
                     </li>
                 </ul>
             </div>
@@ -76,6 +75,9 @@
 <script>
 import { Menu, MenuButton, MenuItems, MenuItem } from '@headlessui/vue'
 import api from '@/services/api'
+import jwt_decode from 'jwt-decode'
+import Cookies from 'js-cookie'
+
 
 export default {
     components: {
@@ -87,14 +89,15 @@ export default {
     data() {
         return {
             isLoggedIn: false,
-            Categories:[],
+            Categories: [],
+            isAdmin: false,
         }
     },
     methods: {
         async logout() {
             try {
                 await api.logout()
-                 // clear token from local storage
+                // clear token from local storage
                 this.isLoggedIn = false // update isLoggedIn state
             } catch (error) {
                 // handle error
@@ -104,13 +107,26 @@ export default {
             this.$router.push('/login')
         }
     },
+
+
     async mounted() {
-        if (localStorage.getItem('token')) {
+        if (Cookies.get('token')) {
             // user is logged in
             this.isLoggedIn = true;
+            const token = Cookies.get('token');
+
+            const decoded = jwt_decode(token)
+            const role = decoded.jti;
+            if (role === 'Admin') {
+                // set a variable to true if the user role is admin
+                this.isAdmin = true;
+            }
+
+
         } else {
             // user is not logged in
             this.isLoggedIn = false;
+            this.isAdmin = false;
         }
         try {
             const response = await api.getCategories();
@@ -118,6 +134,10 @@ export default {
         } catch (error) {
             console.error(error)
         }
+
+
+
+
     }
 
 }

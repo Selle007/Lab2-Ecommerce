@@ -31,7 +31,12 @@ namespace backend.Models
         [BsonElement("total")]
         [BsonRepresentation(BsonType.Decimal128)]
         public double Total { get; set; }
+        public Order()
+        {
+            Status = "Processing"; // Set the default value to "Processing"
+        }
     }
+
 
     public class ShippingDetails
     {
@@ -65,9 +70,6 @@ namespace backend.Models
         [BsonElement("productId")]
         public string ProductId { get; set; }
 
-        [BsonElement("name")]
-        public string Name { get; set; }
-
         [BsonElement("quantity")]
         public int Quantity { get; set; }
 
@@ -78,4 +80,5 @@ namespace backend.Models
         [BsonRepresentation(BsonType.Decimal128)]
         public double Total { get; set; }
     }
+
 }

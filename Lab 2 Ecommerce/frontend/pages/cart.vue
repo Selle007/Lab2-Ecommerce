@@ -95,7 +95,6 @@ export default {
         try {
             const response = await api.getCart() // wait for the Promise to resolve
             this.cartItems = response.data
-            console.log(this.cartItems);
             this.loading = false;
         } catch (error) {
             console.error(error)
@@ -104,7 +103,6 @@ export default {
         try {
             const response = await api.getProducts() // wait for the Promise to resolve
             this.Products = response.data
-            console.log(this.Products);
             this.loading = false;
         } catch (error) {
             console.error(error)

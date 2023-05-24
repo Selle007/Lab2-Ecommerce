@@ -19,7 +19,9 @@
     "@headlessui/vue": "^1.7.13",
     "axios": "^1.4.0",
     "flowbite": "^1.6.5",
+    "js-cookie": "^3.0.5",
     "jsonwebtoken": "^9.0.0",
+    "jwt-decode": "^3.1.2",
     "vue-router": "^4.1.6"
   }
 }

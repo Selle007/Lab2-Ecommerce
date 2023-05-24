@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Threading.Tasks;
@@ -28,14 +29,14 @@ namespace backend.Controllers
 
         // Place order for authenticated user
         [HttpPost]
-        public async Task<IActionResult> PlaceOrder()
+        public async Task<IActionResult> PlaceOrder([FromBody] ShippingDetails shippingDetails)
         {
             var authHeader = Request.Headers["Authorization"].FirstOrDefault();
             if (authHeader == null || !authHeader.StartsWith("Bearer "))
             {
                 return Unauthorized("Invalid authorization header");
             }
-
+     
             var token = authHeader.Substring("Bearer ".Length).Trim();
             var tokenHandler = new JwtSecurityTokenHandler();
             var jwtToken = tokenHandler.ReadJwtToken(token);
@@ -51,6 +52,7 @@ namespace backend.Controllers
             {
                 return NotFound("Cart not found");
             }
+      
 
             var orderItems = cart.Items.Select(cartItem => new Item
             {
@@ -60,12 +62,26 @@ namespace backend.Controllers
                 Total = cartItem.Price * cartItem.Quantity
             }).ToList();
 
+            var shippingDetailsData = new ShippingDetails
+            {
+                Name = shippingDetails.Name,
+                Surname = shippingDetails.Surname,
+                City = shippingDetails.City,
+                Address = shippingDetails.Address,
+                Country = shippingDetails.Country,
+                Phone = shippingDetails.Phone,
+                Email = shippingDetails.Email,
+                ZipCode = shippingDetails.ZipCode
+            };
+
             var order = new Order
             {
                 UserId = userId,
                 Items = orderItems,
                 Total = cart.Total,
-                CreatedAt = DateTime.UtcNow
+                CreatedAt = DateTime.UtcNow,
+                ShippingDetails = shippingDetailsData,
+
             };
 
             await _orders.InsertOneAsync(order);

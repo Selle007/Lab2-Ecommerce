@@ -67,6 +67,9 @@
 
 <script>
 import api from '@/services/api'
+import Cookies from 'js-cookie'
+
+
 
 export default {
     head() {
@@ -88,7 +91,13 @@ export default {
                     password: this.password
                 })
                 // Save the token to local storage
-                localStorage.setItem('token', response.data.token)
+
+                // localStorage.setItem('token', response.data.token)
+
+                // Set the token as a cookie
+                Cookies.set('token', response.data.token, { expires: 1 }) // Expires in 7 days
+
+
                 // Redirect to the home page or any other page after successful login
                 this.$router.push('/')
             } catch (error) {
@@ -97,6 +106,7 @@ export default {
             }
         }
 
-    }
+    },
+
 }
 </script>
