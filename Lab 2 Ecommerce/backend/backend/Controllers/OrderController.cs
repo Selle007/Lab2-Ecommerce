@@ -135,5 +135,29 @@ namespace backend.Controllers
 
             return Ok(order);
         }
+
+        // Update order status
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateOrderStatus(string id, [FromBody] StatusUpdateModel statusUpdate)
+        {
+            var order = await _orders.Find(o => o.Id == id).FirstOrDefaultAsync();
+            if (order == null)
+            {
+                return NotFound("Order not found");
+            }
+
+            order.Status = statusUpdate.Status;
+            await _orders.ReplaceOneAsync(o => o.Id == id, order);
+
+            return Ok("Order status updated successfully!");
+        }
+
+        public class StatusUpdateModel
+        {
+            public string Status { get; set; }
+        }
+
+
+
     }
 }
