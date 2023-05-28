@@ -120,7 +120,7 @@ export default {
     // Orders
   async getOrders() {
     const token = Cookies.get('token');
-    return api.get('/api/orders', { headers: { Authorization: `Bearer ${token}` } });
+    return api.get('/api/order', { headers: { Authorization: `Bearer ${token}` } });
   },
 
   async getUserOrders() {
