@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "oGL+Gx1QDzPBuS1EmoFCkvqHFwPQpPDSlKjQEm+qrC302nBc9G2eqEYfui5SkxrtB8f1bJDWukOaT2C6kTic9w==",
+  "dgSpecHash": "uGxpi2eSqySlWRF8S6TvwqBz0WOF9droHRqpjUzjHLdBpTgXi2MO2Hx7ye9Rvf9Yr9kUC308SSfbCD8IeRurIQ==",
   "success": true,
   "projectFilePath": "C:\\Users\\Memo\\Desktop\\Lab 2\\backend\\backend\\backend.csproj",
   "expectedPackageFiles": [
@@ -58,6 +58,7 @@
     "C:\\Users\\Memo\\.nuget\\packages\\mongodb.bson\\2.19.1\\mongodb.bson.2.19.1.nupkg.sha512",
     "C:\\Users\\Memo\\.nuget\\packages\\mongodb.driver\\2.19.1\\mongodb.driver.2.19.1.nupkg.sha512",
     "C:\\Users\\Memo\\.nuget\\packages\\mongodb.driver.core\\2.19.1\\mongodb.driver.core.2.19.1.nupkg.sha512",
+    "C:\\Users\\Memo\\.nuget\\packages\\mongodb.driver.gridfs\\2.19.1\\mongodb.driver.gridfs.2.19.1.nupkg.sha512",
     "C:\\Users\\Memo\\.nuget\\packages\\mongodb.libmongocrypt\\1.7.0\\mongodb.libmongocrypt.1.7.0.nupkg.sha512",
     "C:\\Users\\Memo\\.nuget\\packages\\newtonsoft.json\\12.0.3\\newtonsoft.json.12.0.3.nupkg.sha512",
     "C:\\Users\\Memo\\.nuget\\packages\\runtime.native.system\\4.0.0\\runtime.native.system.4.0.0.nupkg.sha512",

@@ -19,12 +19,14 @@ namespace backend.Controllers
     {
         private readonly IMongoCollection<Order> _orders;
         private readonly IMongoCollection<Cart> _carts;
+        private readonly IMongoCollection<Product> _products;
 
         public OrderController(IMongoClient client)
         {
             var database = client.GetDatabase("Lab2");
             _orders = database.GetCollection<Order>("orders");
             _carts = database.GetCollection<Cart>("carts");
+            _products = database.GetCollection<Product>("products");
         }
 
         // Place order for authenticated user
@@ -86,6 +88,17 @@ namespace backend.Controllers
 
             await _orders.InsertOneAsync(order);
             await _carts.DeleteOneAsync(c => c.UserId == userId);
+
+            // Reduce the stock of items
+            foreach (var item in order.Items)
+            {
+                var product = await _products.Find(p => p.Id == item.ProductId).FirstOrDefaultAsync();
+                if (product != null)
+                {
+                    product.Stock -= item.Quantity;
+                    await _products.ReplaceOneAsync(p => p.Id == item.ProductId, product);
+                }
+            }
 
             return Ok("Order placed successfully!");
         }
@@ -154,7 +167,7 @@ namespace backend.Controllers
 
         public class StatusUpdateModel
         {
-            public string Status { get; set; }
+            public string? Status { get; set; }
         }
 
 

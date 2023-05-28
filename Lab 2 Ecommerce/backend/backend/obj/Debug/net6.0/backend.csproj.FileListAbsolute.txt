@@ -362,3 +362,4 @@ C:\Users\Memo\Desktop\Lab 2\backend\backend\bin\Debug\net6.0\Newtonsoft.Json.dll
 C:\Users\Memo\Desktop\Lab 2\backend\backend\bin\Debug\net6.0\Scrutor.dll
 C:\Users\Memo\Desktop\Lab 2\backend\backend\bin\Debug\net6.0\Swashbuckle.AspNetCore.Annotations.dll
 C:\Users\Memo\Desktop\Lab 2\backend\backend\bin\Debug\net6.0\Swashbuckle.AspNetCore.Filters.dll
+C:\Users\Memo\Desktop\Lab 2\backend\backend\bin\Debug\net6.0\MongoDB.Driver.GridFS.dll

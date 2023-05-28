@@ -747,6 +747,20 @@
           "lib/netstandard2.1/MongoDB.Driver.Core.dll": {}
         }
       },
+      "MongoDB.Driver.GridFS/2.19.1": {
+        "type": "package",
+        "dependencies": {
+          "MongoDB.Bson": "2.19.1",
+          "MongoDB.Driver": "2.19.1",
+          "MongoDB.Driver.Core": "2.19.1"
+        },
+        "compile": {
+          "lib/netstandard2.1/MongoDB.Driver.GridFS.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.1/MongoDB.Driver.GridFS.dll": {}
+        }
+      },
       "MongoDB.Libmongocrypt/1.7.0": {
         "type": "package",
         "compile": {
@@ -2783,6 +2797,25 @@
         "lib/netstandard2.1/MongoDB.Driver.Core.xml",
         "mongodb.driver.core.2.19.1.nupkg.sha512",
         "mongodb.driver.core.nuspec",
+        "packageIcon.png"
+      ]
+    },
+    "MongoDB.Driver.GridFS/2.19.1": {
+      "sha512": "ahsNUitv/Fk2khrgotqshMwO9RhIkqbRdZSblXmvB/NIn2pRq7wiKAfd6XddLj+LqtPFCndhd2FIohe9OpfxSA==",
+      "type": "package",
+      "path": "mongodb.driver.gridfs/2.19.1",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "License.txt",
+        "lib/net472/MongoDB.Driver.GridFS.dll",
+        "lib/net472/MongoDB.Driver.GridFS.xml",
+        "lib/netstandard2.0/MongoDB.Driver.GridFS.dll",
+        "lib/netstandard2.0/MongoDB.Driver.GridFS.xml",
+        "lib/netstandard2.1/MongoDB.Driver.GridFS.dll",
+        "lib/netstandard2.1/MongoDB.Driver.GridFS.xml",
+        "mongodb.driver.gridfs.2.19.1.nupkg.sha512",
+        "mongodb.driver.gridfs.nuspec",
         "packageIcon.png"
       ]
     },
@@ -5381,6 +5414,7 @@
       "Microsoft.Identity.Web >= 1.16.0",
       "MongoDB.Driver >= 2.19.1",
       "MongoDB.Driver.Core >= 2.19.1",
+      "MongoDB.Driver.GridFS >= 2.19.1",
       "Swashbuckle.AspNetCore >= 6.2.3",
       "Swashbuckle.AspNetCore.Filters >= 6.1.0"
     ]
@@ -5454,6 +5488,10 @@
             "version": "[2.19.1, )"
           },
           "MongoDB.Driver.Core": {
+            "target": "Package",
+            "version": "[2.19.1, )"
+          },
+          "MongoDB.Driver.GridFS": {
             "target": "Package",
             "version": "[2.19.1, )"
           },

@@ -16,6 +16,7 @@
           "Microsoft.Identity.Web": "1.16.0",
           "MongoDB.Driver": "2.19.1",
           "MongoDB.Driver.Core": "2.19.1",
+          "MongoDB.Driver.GridFS": "2.19.1",
           "Swashbuckle.AspNetCore": "6.2.3",
           "Swashbuckle.AspNetCore.Filters": "6.1.0"
         },
@@ -593,6 +594,19 @@
         },
         "runtime": {
           "lib/netstandard2.1/MongoDB.Driver.Core.dll": {
+            "assemblyVersion": "2.19.1.0",
+            "fileVersion": "2.19.1.0"
+          }
+        }
+      },
+      "MongoDB.Driver.GridFS/2.19.1": {
+        "dependencies": {
+          "MongoDB.Bson": "2.19.1",
+          "MongoDB.Driver": "2.19.1",
+          "MongoDB.Driver.Core": "2.19.1"
+        },
+        "runtime": {
+          "lib/netstandard2.1/MongoDB.Driver.GridFS.dll": {
             "assemblyVersion": "2.19.1.0",
             "fileVersion": "2.19.1.0"
           }
@@ -1503,6 +1517,13 @@
       "sha512": "sha512-+T4+vNZHCjp7qoOoNE8hf8VjnwxZttTOHTqv0jibJ4WSnM6lnXZBP4wBOjIKDF3J4aQffvtaZtIt4UWDOV+yAw==",
       "path": "mongodb.driver.core/2.19.1",
       "hashPath": "mongodb.driver.core.2.19.1.nupkg.sha512"
+    },
+    "MongoDB.Driver.GridFS/2.19.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-ahsNUitv/Fk2khrgotqshMwO9RhIkqbRdZSblXmvB/NIn2pRq7wiKAfd6XddLj+LqtPFCndhd2FIohe9OpfxSA==",
+      "path": "mongodb.driver.gridfs/2.19.1",
+      "hashPath": "mongodb.driver.gridfs.2.19.1.nupkg.sha512"
     },
     "MongoDB.Libmongocrypt/1.7.0": {
       "type": "package",

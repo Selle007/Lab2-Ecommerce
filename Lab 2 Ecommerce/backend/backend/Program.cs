@@ -1,16 +1,16 @@
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.Identity.Web;
 using Microsoft.EntityFrameworkCore;
 using MongoDB.Driver;
-using backend.Data;
 using Microsoft.AspNetCore.Identity;
 using backend.Models;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-using System.IdentityModel.Tokens.Jwt;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Filters;
+using Microsoft.Extensions.FileProviders;
+using Microsoft.AspNetCore.StaticFiles;
+
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -106,6 +106,14 @@ app.UseRouting();
 
 // Use CORS middleware
 app.UseCors("AllowAll");
+
+// Add static file middleware configuration
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(Path.Combine(app.Environment.ContentRootPath, "uploads")),
+    RequestPath = "/uploads",
+    ContentTypeProvider = new FileExtensionContentTypeProvider()
+});
 
 
 app.UseAuthentication();

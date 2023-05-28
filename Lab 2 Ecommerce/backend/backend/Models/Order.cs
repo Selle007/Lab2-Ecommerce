@@ -13,24 +13,24 @@ namespace backend.Models
         public string Id { get; set; }
 
         [BsonElement("userId")]
-        public string UserId { get; set; }
+        public string? UserId { get; set; }
 
         [BsonElement("shippingDetails")]
-        public ShippingDetails ShippingDetails { get; set; }
+        public ShippingDetails? ShippingDetails { get; set; }
 
         [BsonElement("items")]
-        public List<Item> Items { get; set; }
+        public List<Item>? Items { get; set; }
 
 
         [BsonElement("status")]
-        public string Status { get; set; }
+        public string? Status { get; set; }
 
         [BsonElement("created_at")]
-        public DateTime CreatedAt { get; set; }
+        public DateTime? CreatedAt { get; set; }
 
         [BsonElement("total")]
         [BsonRepresentation(BsonType.Decimal128)]
-        public double Total { get; set; }
+        public double? Total { get; set; }
         public Order()
         {
             Status = "Processing"; // Set the default value to "Processing"
@@ -41,44 +41,44 @@ namespace backend.Models
     public class ShippingDetails
     {
         [BsonElement("name")]
-        public string Name { get; set; }
+        public string? Name { get; set; }
 
         [BsonElement("surname")]
-        public string Surname { get; set; }
+        public string? Surname { get; set; }
 
         [BsonElement("city")]
-        public string City { get; set; }
+        public string? City { get; set; }
 
         [BsonElement("address")]
-        public string Address { get; set; }
+        public string? Address { get; set; }
 
         [BsonElement("country")]
-        public string Country { get; set; }
+        public string? Country { get; set; }
 
         [BsonElement("phone")]
-        public string Phone { get; set; }
+        public string? Phone { get; set; }
 
         [BsonElement("email")]
-        public string Email { get; set; }
+        public string? Email { get; set; }
 
         [BsonElement("zipCode")]
-        public string ZipCode { get; set; }
+        public string? ZipCode { get; set; }
     }
 
     public class Item
     {
         [BsonElement("productId")]
-        public string ProductId { get; set; }
+        public string? ProductId { get; set; }
 
         [BsonElement("quantity")]
         public int Quantity { get; set; }
 
         [BsonElement("price")]
-        public double Price { get; set; }
+        public double? Price { get; set; }
 
         [BsonElement("total")]
         [BsonRepresentation(BsonType.Decimal128)]
-        public double Total { get; set; }
+        public double? Total { get; set; }
     }
 
 }
