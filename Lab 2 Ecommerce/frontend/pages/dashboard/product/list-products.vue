@@ -275,7 +275,7 @@ export default {
       }
     },
 
-itProduct: function (id) {
+editProduct: function (id) {
       this.$router.push(`/dashboard/product/${id}`);
 
     },
