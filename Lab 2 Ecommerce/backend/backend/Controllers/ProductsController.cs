@@ -178,5 +178,21 @@ namespace backend.Controllers
                 return StatusCode(500, $"Internal server error: {ex}");
             }
         }
+
+        [AllowAnonymous]
+        [HttpGet("search")]
+        public async Task<ActionResult<List<Product>>> SearchProducts(string query)
+        {
+            try
+            {
+                var filter = Builders<Product>.Filter.Regex("Name", new BsonRegularExpression(query, "i"));
+                var searchResults = await _products.Find(filter).ToListAsync();
+                return searchResults;
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex}");
+            }
+        }
     }
 }
