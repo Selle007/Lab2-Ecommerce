@@ -9,8 +9,7 @@ using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Filters;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.AspNetCore.StaticFiles;
-
-
+using backend;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -89,6 +88,8 @@ builder.Services.AddCors(options =>
     });
 });
 
+// Add Stripe Infrastructure
+builder.Services.AddStripeInfrastructure(builder.Configuration);
 
 
 var app = builder.Build();
