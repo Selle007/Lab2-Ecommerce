@@ -1,7 +1,7 @@
 import jwt_decode from 'jwt-decode';
 import Cookies from 'js-cookie';
 
-export default defineNuxtRouteMiddleware (( to, from ) => {
+export default defineNuxtRouteMiddleware((to, from) => {
   const token = Cookies.get('token');
 
   if (token) {
@@ -10,12 +10,8 @@ export default defineNuxtRouteMiddleware (( to, from ) => {
     let isAdmin = false;
 
     if (role === 'Admin') {
-      console.log("User is Admin");
       isAdmin = true;
-    } else {
-      console.log("User is not Admin");
     }
-
     if (to.path === "/dashboard" && !isAdmin) {
       return redirect("/a");
     }

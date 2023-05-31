@@ -8,22 +8,22 @@
           <div class="grid gap-8 lg:grid-cols-4 lg:items-start">
             <div class="lg:col-span-3">
               <div class="relative mt-4 flex justify-center">
-                <img src="../../assets/images/1.png" alt="Product Image" class="w-1/2 rounded-xl object-cover shadow-lg" />
+                <img :src=product.image alt="Product Image" class="w-1/2 rounded-xl object-cover shadow-lg" />
 
                 <ul class="mt-1 flex gap-4 flex-col">
                   <li>
-                    <img alt="Tee" src="../../assets/images/1.png" class="h-16 w-16 rounded-md object-cover" />
+                    <img alt="Tee" :src=product.image class="h-16 w-16 rounded-md object-cover" />
                   </li>
 
                   <li>
-                    <img alt="Tee" src="../../assets/images/1.png" class="h-16 w-16 rounded-md object-cover" />
+                    <img alt="Tee" :src=product.image class="h-16 w-16 rounded-md object-cover" />
                   </li>
 
                   <li>
-                    <img alt="Tee" src="../../assets/images/1.png" class="h-16 w-16 rounded-md object-cover" />
+                    <img alt="Tee" :src=product.image class="h-16 w-16 rounded-md object-cover" />
                   </li>
                   <li>
-                    <img alt="Tee" src="../../assets/images/1.png" class="h-16 w-16 rounded-md object-cover" />
+                    <img alt="Tee" :src=product.image class="h-16 w-16 rounded-md object-cover" />
                   </li>
                 </ul>
 

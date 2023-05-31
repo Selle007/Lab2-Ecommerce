@@ -17,7 +17,7 @@
               :key="item.id">
                   <a :href="`/products/${item.productId}`"
                     class="flex items-center gap-4 border rounded-lg px-4 shadow-sm">
-                    <img src="../assets/images/1.png" alt=""
+                    <img :src=getProductImage(item.productId) alt=""
                       class="h-20 w-20 rounded object-cover" />
                     <div>
                       <h3 class="text-gray-900">{{ getProductName(item.productId) }}</h3>
@@ -142,6 +142,10 @@ export default {
     getProductDesc(productId) {
       const product = this.Products.find((p) => p.id === productId);
       return product ? product.description : "";
+    },
+    getProductImage(productId) {
+      const product = this.Products.find((p) => p.id === productId);
+      return product ? product.image : "";
     },
   }
 

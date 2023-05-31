@@ -16,9 +16,10 @@ export default {
         let token = Cookies.get('token');
         return api.get(`/api/products/${id}`, { headers: { Authorization: `Bearer ${token}` } })
     },
-    async createProduct(product) {
+    async createProduct(formData) {
         let token = Cookies.get('token');
-        return api.post('/api/products', product, { headers: { Authorization: `Bearer ${token}` } })
+        console.log(formData)
+        return api.post('/api/products', formData, { headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'multipart/form-data' } })
     },
     async updateProduct(id, product) {
         let token = Cookies.get('token');

@@ -42,11 +42,11 @@
                     <td class="px-4 py-3">{{ product.price }}</td>
                     <td class="px-4 py-3">{{ product.stock }}</td>
                     <td class="px-4 py-3">
-                      <img src="../../../assets/images/1.png" alt=""
+                      <img :src=product.image alt=""
                         class="max-h-20 object-cover transition duration-500 group-hover:scale-105 sm:h-72" />
                     </td>
                     <td class="px-4 py-3">{{ product.isFeatured ? "Yes" : "No" }}</td>
-                    <td class="px-4 py-3">{{getCategoryName(product.category) }}</td>
+                    <td class="px-4 py-3">{{ getCategoryName(product.category) }}</td>
 
                     <td class="px-4 py-3 flex flex-row w-">
                       <span class="inline-flex divide-x overflow-hidden rounded-md border bg-white shadow-sm">
@@ -110,7 +110,7 @@
               </button>
             </div>
             <!-- Modal body -->
-            <form @submit.prevent="createProduct()">
+            <form @submit.prevent="createProduct">
               <div class="grid gap-4 mb-4 sm:grid-cols-2">
                 <div>
                   <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Product
@@ -142,18 +142,20 @@
                 </div>
 
                 <div>
-                  <label for="image" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Product
+                  <label for="file" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Product
                     Image</label>
-                  <input type="text" name="image" id="image" v-model="product.image"
-                    class="bg-gray-50 h-11 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-emerald-600 focus:border-emerald-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-emerald-500 dark:focus:border-emerald-500"
-                    required="">
+                  <input type="file" name="file" id="file" v-on:change="handleFileChange"
+                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-emerald-600 focus:border-emerald-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-emerald-500 dark:focus:border-emerald-500"
+                    required>
                 </div>
+
                 <div>
                   <label for="category"
-                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Product</label>
-                  <select id="category" v-model="product.category"
+                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Category</label>
+                  <select id="category" v-model="product.categoryId"
                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-emerald-500 focus:border-emerald-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-emerald-500 dark:focus:border-emerald-500">
-                    <option v-for="category in Categories" :key="category.id" :value="category.id">{{ category.name }}</option>
+                    <option v-for="category in Categories" :key="category.id" :value="category.id">{{ category.name }}
+                    </option>
                   </select>
                 </div>
                 <div class="sm:col-span-2">
@@ -178,11 +180,6 @@
           </div>
         </div>
       </div>
-
-
-
-
-
     </NuxtLayout>
   </div>
 </template>
@@ -205,85 +202,78 @@ export default {
         id: 'string',
         name: '',
         description: '',
-        price: '',
-        stock: '',
-        image: '',
-        category: '',
-        isFeatured: false
-      }
+        price: 0,
+        stock: 0,
+        isFeatured: false,
+        categoryId: ''
+      },
+      file: null
     }
   },
   async mounted() {
     try {
-      const response = await api.getCategories() // wait for the Promise to resolve
+      const response = await api.getCategories()
       this.Categories = response.data
-      console.log(this.Categories);
     } catch (error) {
       console.error(error)
     }
     try {
-      const response = await api.getProducts() // wait for the Promise to resolve
+      const response = await api.getProducts()
       this.Products = response.data
-      console.log(this.Products);
       this.loading = false;
     } catch (error) {
       console.error(error)
       this.loading = true;
     }
-
-
-
   },
-
-
   methods: {
     async createProduct() {
       try {
-        const token = localStorage.getItem('token');
-        console.log(token);
+        const formData = new FormData();
+        formData.append('name', this.product.name);
+        formData.append('description', this.product.description);
+        formData.append('price', this.product.price);
+        formData.append('stock', this.product.stock);
+        formData.append('isFeatured', this.product.isFeatured);
+        formData.append('categoryId', this.product.categoryId);
+        formData.append('file', this.file);
 
-        const response = await api.createProduct({
-          id: 'string',
-          name: this.product.name,
-          description: this.product.description,
-          price: this.product.price,
-          stock: this.product.stock,
-          isFeatured: this.product.isFeatured,
-          categoryId: this.product.category,
-          image: this.product.image,
-        });
+        await api.createProduct(formData);
 
-        console.log(response.data);
-        window.location.reload();
+        // Clear the form fields and close the modal
+        this.product = {
+          name: '',
+          description: '',
+          price: 0,
+          stock: 0,
+          isFeatured: false,
+          category: ''
+        };
+        this.image = null;
+        window.location.reload()
       } catch (error) {
         console.error(error);
       }
     },
-
-
-
+    handleFileChange(event) {
+      const file = event.target.files[0];
+      this.file = file;
+    },
     async deleteProduct(id) {
       try {
         const response = await api.deleteProduct(id);
-        console.log(response)
         window.location.reload()
-        console.log(id)
-
       } catch (error) {
         console.error(error)
-        // handle error
       }
     },
-
-editProduct: function (id) {
+    editProduct: function (id) {
       this.$router.push(`/dashboard/product/${id}`);
-
     },
     getCategoryName(categoryId) {
       const category = this.Categories.find((c) => c._id === categoryId);
       return category ? category.name : "";
     },
-
   }
 }
 </script>

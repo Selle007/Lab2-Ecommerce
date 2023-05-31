@@ -43,7 +43,7 @@
                   <ul class="space-y-4">
                     <li class="flex items-center gap-4 border rounded-lg px-4 shadow-sm py-1" v-for="item in order.items"
                       :key="item.id">
-                      <img src="../../../assets/images/2.png" alt="" class="h-16 w-16 rounded object-cover" />
+                      <img :src=product.image alt="" class="h-16 w-16 rounded object-cover" />
                       <div>
                         <h3 class="font-semibold text-gray-900"> {{getProductName(item.productId)}} </h3>
                         <dl class="mt-0.5 space-y-px text-[10px] text-gray-600">

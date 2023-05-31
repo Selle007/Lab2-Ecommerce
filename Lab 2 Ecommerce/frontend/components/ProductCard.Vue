@@ -11,7 +11,7 @@
       </svg>
     </button>
 
-    <img src="../assets/images/1.png" alt="Product image"
+    <img :src=product.image alt="Product image"
       class="h-64 w-full object-cover transition duration-500 group-hover:scale-105 sm:h-72" />
 
     <div class="relative border border-gray-100 bg-white p-6 flex flex-col">

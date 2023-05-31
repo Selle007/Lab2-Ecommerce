@@ -29,9 +29,9 @@
                     <th scope="row" class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap">
                       {{ order.id }}
                     </th>
-                    <td class="text-left">TEST
+                    <td class="text-left">{{order.shippingDetails.name}} {{ order.shippingDetails.surname }}
                     </td>
-                    <td class="text-left">{{ formatDate(order.created_at) }}</td>
+                    <td class="text-left">{{ formatDate(order.createdAt) }}</td>
                     <td class="text-left">{{ order.total }}&euro;</td>
                     <td class="text-left">
                       <span v-if="order.status === 'Processing'"
@@ -93,80 +93,22 @@ export default {
   },
   async mounted() {
     try {
-      const response = await api.getCategories() // wait for the Promise to resolve
-      this.Categories = response.data
-      console.log(this.Categories);
-    } catch (error) {
-      console.error(error)
-    }
-    try {
       const response = await api.getOrders() // wait for the Promise to resolve
       this.Orders = response.data
-      console.log(this.Orders);
       this.loading = false;
     } catch (error) {
       console.error(error)
       this.loading = true;
     }
-
-
-
   },
-
-
   methods: {
-    async createProduct() {
-      try {
-        const token = localStorage.getItem('token');
-        console.log(token);
-
-        const response = await api.createProduct({
-          id: 'string',
-          name: this.product.name,
-          description: this.product.description,
-          price: this.product.price,
-          stock: this.product.stock,
-          isFeatured: this.product.isFeatured,
-          categoryId: this.product.category,
-          image: this.product.image,
-        });
-
-        console.log(response.data);
-        window.location.reload();
-      } catch (error) {
-        console.error(error);
-      }
-    },
-
-
-
-    async deleteProduct(id) {
-      try {
-        const response = await api.deleteProduct(id);
-        console.log(response)
-        window.location.reload()
-        console.log(id)
-
-      } catch (error) {
-        console.error(error)
-        // handle error
-      }
-    },
-
     viewOrder: function (id) {
       this.$router.push(`/dashboard/order/${id}`);
-
     },
-    getCategoryName(categoryId) {
-      const category = this.Categories.find((c) => c._id === categoryId);
-      return category ? category.name : "";
-    },
-    
     formatDate(date) {
-            // format the date string to display in a more user-friendly way
-            return new Date(date).toLocaleDateString()
-        },
-
+      // format the date string to display in a more user-friendly way
+      return new Date(date).toLocaleDateString()
+    },
   }
 }
 </script>
