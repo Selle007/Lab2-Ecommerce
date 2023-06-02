@@ -21,6 +21,10 @@ export default {
         console.log(formData)
         return api.post('/api/products', formData, { headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'multipart/form-data' } })
     },
+    async searchProducts(query) {
+        let token = Cookies.get('token');
+        return api.get(`/api/products/search?query=${query}`, { headers: { Authorization: `Bearer ${token}` } });
+      },
     async updateProduct(id, product) {
         let token = Cookies.get('token');
         return api.put(`/api/products/${id}`, product, { headers: { Authorization: `Bearer ${token}` } })

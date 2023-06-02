@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 
+
 [ApiController]
 [Route("api/[controller]")]
 public class AccountController : ControllerBase
@@ -41,8 +42,6 @@ public class AccountController : ControllerBase
         return Ok();
     }
 
-
-
     [HttpPost("login")]
     public async Task<IActionResult> Login(LoginDTO model)
     {
@@ -60,18 +59,15 @@ public class AccountController : ControllerBase
         return Ok(new { Token = token });
     }
 
-
     private async Task<string> GenerateJwtTokenAsync(ApplicationUser user)
     {
         var claims = new List<Claim>
-    {
-        new Claim(JwtRegisteredClaimNames.Sub, user.Email),
-        new Claim(JwtRegisteredClaimNames.UniqueName, user.Id),
-        new Claim(ClaimTypes.NameIdentifier, user.Id),
-        new Claim(ClaimTypes.NameIdentifier, user.Id),
-
-        
-    };
+        {
+            new Claim(JwtRegisteredClaimNames.Sub, user.Email),
+            new Claim(JwtRegisteredClaimNames.UniqueName, user.Id),
+            new Claim(ClaimTypes.NameIdentifier, user.Id),
+            new Claim(ClaimTypes.NameIdentifier, user.Id),
+        };
 
         // Get the user's roles
         var roles = await _userManager.GetRolesAsync(user);
@@ -98,6 +94,130 @@ public class AccountController : ControllerBase
 
 
 
+
+    [HttpGet("profile")]
+    public async Task<IActionResult> GetCurrentUser()
+    {
+        var authHeader = Request.Headers["Authorization"].FirstOrDefault();
+        if (authHeader == null || !authHeader.StartsWith("Bearer "))
+        {
+            return Unauthorized("Invalid authorization header");
+        }
+
+        var token = authHeader.Substring("Bearer ".Length).Trim();
+        var tokenHandler = new JwtSecurityTokenHandler();
+        var jwtToken = tokenHandler.ReadJwtToken(token);
+        var userId = jwtToken.Claims.FirstOrDefault(c => c.Type == "unique_name")?.Value;
+
+        if (string.IsNullOrEmpty(userId))
+        {
+            return BadRequest("User ID not found in the token");
+        }
+
+        var user = await _userManager.FindByIdAsync(userId);
+
+        if (user == null)
+        {
+            return NotFound("User not found");
+        }
+
+        return Ok(new
+        {
+            user.Id,
+            user.UserName,
+            user.Email
+        });
+    }
+
+
+[Authorize(Roles = "Admin")]
+    [HttpGet("users")]
+    public IActionResult GetUsers()
+    {
+        var users = _userManager.Users.Select(u => new
+        {
+            u.Id,
+            u.UserName,
+            u.Email
+        }).ToList();
+
+        return Ok(users);
+    }
+
+    [Authorize(Roles = "Admin")]
+    [HttpPost("make-admin")]
+    public async Task<IActionResult> MakeAdmin(string userId)
+    {
+        var user = await _userManager.FindByIdAsync(userId);
+
+        if (user == null)
+        {
+            return BadRequest("User not found");
+        }
+
+        if (await _userManager.IsInRoleAsync(user, "Admin"))
+        {
+            return BadRequest("User is already an admin");
+        }
+
+        var result = await _userManager.AddToRoleAsync(user, "Admin");
+
+        if (!result.Succeeded)
+        {
+            return BadRequest(result.Errors);
+        }
+
+        return Ok();
+    }
+
+    [Authorize(Roles = "Admin")]
+    [HttpPost("remove-admin")]
+    public async Task<IActionResult> RemoveAdmin(string userId)
+    {
+        var user = await _userManager.FindByIdAsync(userId);
+
+        if (user == null)
+        {
+            return BadRequest("User not found");
+        }
+
+        if (!await _userManager.IsInRoleAsync(user, "Admin"))
+        {
+            return BadRequest("User is not an admin");
+        }
+
+        var result = await _userManager.RemoveFromRoleAsync(user, "Admin");
+
+        if (!result.Succeeded)
+        {
+            return BadRequest(result.Errors);
+        }
+
+        return Ok();
+    }
+
+
+    [Authorize(Roles = "Admin")]
+    [HttpPost("delete-user")]
+    public async Task<IActionResult> DeleteUser(string userId)
+    {
+        var user = await _userManager.FindByIdAsync(userId);
+
+        if (user == null)
+        {
+            return BadRequest("User not found");
+        }
+
+        var result = await _userManager.DeleteAsync(user);
+
+        if (!result.Succeeded)
+        {
+            return BadRequest(result.Errors);
+        }
+
+        return Ok();
+    }
+
     [Authorize]
     [HttpPost("logout")]
     public async Task<IActionResult> Logout()
@@ -111,27 +231,5 @@ public class AccountController : ControllerBase
         // Return information about the logged out user
         return Ok(new { message = $"User {userEmail} has been logged out." });
     }
-    [Authorize(Roles = "Admin")]
-    [HttpPost("makeAdmin")]
-    public async Task<IActionResult> MakeAdmin(string userId)
-    {
-        var user = await _userManager.FindByIdAsync(userId);
-
-        if (user == null)
-        {
-            return BadRequest("User not found");
-        }
-
-        var result = await _userManager.AddToRoleAsync(user, "Admin");
-
-        if (!result.Succeeded)
-        {
-            return BadRequest(result.Errors);
-        }
-
-        return Ok();
-    }
-
-
 }
 

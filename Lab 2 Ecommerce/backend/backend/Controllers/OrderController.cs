@@ -113,7 +113,7 @@ namespace backend.Controllers
         }
 
         // Get orders for authenticated user
-        [HttpGet("user")]
+        [HttpGet("userOrders")]
         public async Task<ActionResult<IEnumerable<Order>>> GetUserOrders()
         {
             var authHeader = Request.Headers["Authorization"].FirstOrDefault();

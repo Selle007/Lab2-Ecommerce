@@ -5,7 +5,21 @@
                 <img src="../assets/images/logo.png" class="h-8 mr-3" alt="Flowbite Logo" />
 
             </a>
+
+
             <div class="flex items-center">
+                <form @submit.prevent="navigateToSearchResults" class="relative">
+                    <input v-model="searchQuery" type="text" placeholder="Search products"
+                        class="px-4 py-2 text-sm rounded-md bg-gray-100 focus:outline-none focus:bg-white focus:ring-1 focus:ring-emerald-500" />
+                    <button type="submit" class="absolute right-0 top-0 mt-2 mr-2">
+                        <svg class="w-5 h-5 text-gray-500" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                        </svg>
+                    </button>
+                </form>
+
                 <a href="tel:38349111222" class="mr-6 text-sm  text-gray-500 dark:text-white hover:text-emerald-600">(383)
                     49-111-222</a>
                 <a href="/login" v-if="!isLoggedIn"
@@ -63,9 +77,6 @@
                     <li>
                         <a href="/cart" class="text-gray-900 dark:text-white hover:text-emerald-600">Cart</a>
                     </li>
-                    <li>
-                        <a href="/dashboard" class="text-gray-900 dark:text-white hover:text-emerald-600">checkout</a>
-                    </li>
                 </ul>
             </div>
         </div>
@@ -91,6 +102,7 @@ export default {
             isLoggedIn: false,
             Categories: [],
             isAdmin: false,
+            searchQuery: '',
         }
     },
     methods: {
@@ -105,7 +117,10 @@ export default {
         },
         goToLogin() {
             this.$router.push('/login')
-        }
+        },
+        navigateToSearchResults() {
+            this.$router.push(`/search/${encodeURIComponent(this.searchQuery)}`);
+        },
     },
 
 

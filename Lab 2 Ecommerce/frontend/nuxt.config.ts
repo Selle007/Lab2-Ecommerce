@@ -13,6 +13,5 @@ export default defineNuxtConfig({
     script: [
       { src: '~/assets/main.js', type: 'text/javascript', body: true }
     ]
-  }
-  
+  },
 })

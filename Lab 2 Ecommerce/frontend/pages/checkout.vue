@@ -119,6 +119,16 @@
                                             class="mt-3 h-12 px-4 w-full rounded-md border shadow-md sm:text-sm" />
                                     </div>
                                 </fieldset>
+
+                                <!-- Card details form fields (using Stripe Elements) -->
+                                <div class="col-span-6">
+                                    <label for="card-element" class="block text-xs font-medium text-gray-700">
+                                        Card Details
+                                    </label>
+                                    <div id="card-element" class="mt-1"></div>
+                                    <div id="card-errors" class="text-xs text-red-500 mt-1"></div>
+                                </div>
+                                
                                 <div class="col-span-6">
                                     <button type="submit"
                                         class="block w-full rounded-md bg-emerald-700 hover:bg-emerald-800 p-2.5 text-sm text-white transition hover:shadow-lg">
@@ -178,17 +188,17 @@ export default {
         }
     },
     computed: {
-    cartTotal() {
-      return this.cartItems.reduce((total, item) => {
-        const product = this.Products.find((p) => p.id === item.productId);
-        if (product) {
-          return total + (product.price * item.quantity);
-        } else {
-          return total;
+        cartTotal() {
+            return this.cartItems.reduce((total, item) => {
+                const product = this.Products.find((p) => p.id === item.productId);
+                if (product) {
+                    return total + (product.price * item.quantity);
+                } else {
+                    return total;
+                }
+            }, 0);
         }
-      }, 0);
-    }
-  },
+    },
     methods: {
         async placeOrder() {
             try {

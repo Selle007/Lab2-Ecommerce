@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "efJtf6AMbV5OqmIsCR2cFm3+jWhI2B/b+ZvW901u5KH3Z26wcDvawYe5zGgdwPCvIVjo8na4zfJwi1bBWP6flA==",
+  "dgSpecHash": "uGxpi2eSqySlWRF8S6TvwqBz0WOF9droHRqpjUzjHLdBpTgXi2MO2Hx7ye9Rvf9Yr9kUC308SSfbCD8IeRurIQ==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Memo\\Documents\\GitHub\\Lab2-Ecommerce\\Lab 2 Ecommerce\\backend\\backend\\backend.csproj",
+  "projectFilePath": "C:\\Users\\Memo\\Desktop\\Lab 2\\backend\\backend\\backend.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Memo\\.nuget\\packages\\awssdk.core\\3.7.100.14\\awssdk.core.3.7.100.14.nupkg.sha512",
     "C:\\Users\\Memo\\.nuget\\packages\\awssdk.securitytoken\\3.7.100.14\\awssdk.securitytoken.3.7.100.14.nupkg.sha512",
