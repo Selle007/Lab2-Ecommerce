@@ -3,38 +3,29 @@
         <div class="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl p-4">
             <a href="/" class="flex items-center">
                 <img src="../assets/images/logo.png" class="h-8 mr-3" alt="Flowbite Logo" />
-
             </a>
 
 
-            <div class="flex items-center">
-                <form @submit.prevent="navigateToSearchResults" class="relative">
-                    <input v-model="searchQuery" type="text" placeholder="Search products"
-                        class="px-4 py-2 text-sm rounded-md bg-gray-100 focus:outline-none focus:bg-white focus:ring-1 focus:ring-emerald-500" />
-                    <button type="submit" class="absolute right-0 top-0 mt-2 mr-2">
-                        <svg class="w-5 h-5 text-gray-500" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <circle cx="11" cy="11" r="8"></circle>
-                            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-                        </svg>
-                    </button>
-                </form>
 
-                <a href="tel:38349111222" class="mr-6 text-sm  text-gray-500 dark:text-white hover:text-emerald-600">(383)
-                    49-111-222</a>
+            <div class="flex items-center">
+                <SearchBar @search="navigateToSearchResults" class="relative" />
+
                 <a href="/login" v-if="!isLoggedIn"
-                    class="text-sm  text-emerald-600 dark:text-emerald-500 hover:text-emerald-600">Login</a>
+                    class="text-sm text-emerald-600 dark:text-emerald-500 hover:text-emerald-600">Login</a>
                 <a href="/dashboard" v-if="isAdmin"
                     class="text-sm mr-6 text-gray-600 dark:text-emerald-500 hover:text-emerald-600">Dashboard</a>
+                <a href="/profile" v-if="isLoggedIn"
+                    class="text-sm mr-6 text-gray-600 dark:text-emerald-500 hover:text-emerald-600">My Account</a>
                 <a href="/" @click="logout" v-if="isLoggedIn"
-                    class="text-sm  text-emerald-600 dark:text-emerald-500 hover:text-emerald-600">Logout</a>
+                    class="text-sm text-emerald-600 dark:text-emerald-500 hover:text-emerald-600">Logout</a>
             </div>
         </div>
     </nav>
+
     <nav class="bg-gray-50 dark:bg-gray-700">
         <div class="max-w-screen-xl px-4 py-3 mx-auto">
             <div class="flex justify-center">
-                <ul class="flex flex-row  text-center font-medium mt-0 mr-6 space-x-8 text-sm">
+                <ul class="flex flex-row text-center font-medium mt-0 mr-6 space-x-8 text-sm">
                     <li>
                         <a href="/" class="text-gray-900 dark:text-white hover:text-emerald-600"
                             aria-current="page">Home</a>
@@ -88,7 +79,7 @@ import { Menu, MenuButton, MenuItems, MenuItem } from '@headlessui/vue'
 import api from '@/services/api'
 import jwt_decode from 'jwt-decode'
 import Cookies from 'js-cookie'
-
+import SearchBar from '@/components/SearchBar.vue'
 
 export default {
     components: {
@@ -96,13 +87,48 @@ export default {
         MenuButton,
         MenuItem,
         MenuItems,
+        SearchBar,
     },
+    async asyncData({ error }) {
+    try {
+        if (Cookies.get('token')) {
+            // user is logged in
+            this.isLoggedIn = true;
+            const token = Cookies.get('token');
+
+            const decoded = jwt_decode(token)
+            const role = decoded.jti;
+            if (role === 'Admin') {
+                // set a variable to true if the user role is admin
+                this.isAdmin = true;
+            }
+        } else {
+            // user is not logged in
+            this.isLoggedIn = false;
+            this.isAdmin = false;
+        }
+        try {
+            const response = await api.getCategories();
+            this.Categories = response.data;
+        } catch (error) {
+            console.error(error);
+        }
+
+      // Return the data as an object
+      return {
+        isLoggedIn,
+        otherData
+      };
+    } catch (error) {
+      // Handle errors and display appropriate error messages
+      error({ statusCode: 500, message: 'Failed to load data' });
+    }
+  },
     data() {
         return {
             isLoggedIn: false,
             Categories: [],
             isAdmin: false,
-            searchQuery: '',
         }
     },
     methods: {
@@ -115,16 +141,11 @@ export default {
                 // handle error
             }
         },
-        goToLogin() {
-            this.$router.push('/login')
-        },
-        navigateToSearchResults() {
-            this.$router.push(`/search/${encodeURIComponent(this.searchQuery)}`);
+        navigateToSearchResults(searchTerm) {
+            this.$router.push(`/search/${encodeURIComponent(searchTerm)}`);
         },
     },
-
-
-    async mounted() {
+    async beforeMount() {
         if (Cookies.get('token')) {
             // user is logged in
             this.isLoggedIn = true;
@@ -136,8 +157,6 @@ export default {
                 // set a variable to true if the user role is admin
                 this.isAdmin = true;
             }
-
-
         } else {
             // user is not logged in
             this.isLoggedIn = false;
@@ -145,16 +164,11 @@ export default {
         }
         try {
             const response = await api.getCategories();
-            this.Categories = response.data
+            this.Categories = response.data;
         } catch (error) {
-            console.error(error)
+            console.error(error);
         }
-
-
-
-
     }
-
 }
 </script>
   

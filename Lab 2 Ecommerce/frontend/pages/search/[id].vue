@@ -22,6 +22,7 @@
                     <div class="max-w-screen-xl px-4 py-8 mx-auto sm:px-6 sm:py-12 lg:px-8">
                         <header  class="text-center">
                             <h2 v-if="Products.length < 1" class="text-xl font-bold text-gray-900 sm:text-3xl">No Products found!</h2>
+                            <h2 v-else class="text-xl font-bold text-gray-900 sm:text-3xl">Search results for "{{ searchResult }}"</h2>
                         </header>
 
                         <ul class="grid gap-4 mt-8 sm:grid-cols-2 lg:grid-cols-4">
@@ -51,6 +52,7 @@ export default {
             Products: [],
             Categories: [],
             category:{},
+            searchResult:'',
 
         }
     },
@@ -60,6 +62,7 @@ export default {
         try {
           const response = await api.searchProducts(query);
           this.Products = response.data;
+          this.searchResult = query;
         } catch (error) {
           console.error(error);
         }

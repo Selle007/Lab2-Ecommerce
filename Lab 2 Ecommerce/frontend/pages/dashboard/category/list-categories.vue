@@ -152,7 +152,6 @@ export default {
         console.log(token);
       const response = await api.getCategories() // wait for the Promise to resolve
       this.Categories = response.data
-      console.log(this.Categories);
       this.loading = false;
     } catch (error) {
       console.error(error)

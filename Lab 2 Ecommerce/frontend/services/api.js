@@ -24,7 +24,7 @@ export default {
     async searchProducts(query) {
         let token = Cookies.get('token');
         return api.get(`/api/products/search?query=${query}`, { headers: { Authorization: `Bearer ${token}` } });
-      },
+    },
     async updateProduct(id, product) {
         let token = Cookies.get('token');
         return api.put(`/api/products/${id}`, product, { headers: { Authorization: `Bearer ${token}` } })
@@ -39,7 +39,7 @@ export default {
         return api.post('/api/account/register', user)
     },
     async login(user) {
-        
+
 
         return api.post('/api/account/login', user)
     },
@@ -51,7 +51,22 @@ export default {
         let token = Cookies.get('token');
         return api.post(`/api/account/makeAdmin/${userId}`, null, { headers: { Authorization: `Bearer ${token}` } })
     },
-
+    async updateProfile(updatedData) {
+        let token = Cookies.get('token');
+        return api.put('/api/account/profile', updatedData, { headers: { Authorization: `Bearer ${token}` } });
+    },
+    async getUsers() {
+        let token = Cookies.get('token');
+        return api.get('/api/account/users', { headers: { Authorization: `Bearer ${token}` } });
+    },
+    async updateUserRole(userId) {
+        let token = Cookies.get('token');
+        return api.post('/api/account/updateUserRole', { userId }, { headers: { Authorization: `Bearer ${token}` } });
+    },
+    async getProfile() {
+        let token = Cookies.get('token');
+        return api.get('/api/account/profile', { headers: { Authorization: `Bearer ${token}` } });
+    },
     // Categories
     async getCategories() {
         let token = Cookies.get('token');
@@ -123,30 +138,30 @@ export default {
         return api.delete('/api/cart', { headers: { Authorization: `Bearer ${token}` } });
     },
     // Orders
-  async getOrders() {
-    const token = Cookies.get('token');
-    return api.get('/api/order', { headers: { Authorization: `Bearer ${token}` } });
-  },
+    async getOrders() {
+        const token = Cookies.get('token');
+        return api.get('/api/order', { headers: { Authorization: `Bearer ${token}` } });
+    },
 
-  async getUserOrders() {
-    const token = Cookies.get('token');
-    return api.get('/api/order/user', { headers: { Authorization: `Bearer ${token}` } });
-  },
+    async getUserOrders() {
+        const token = Cookies.get('token');
+        return api.get('/api/order/userOrders', { headers: { Authorization: `Bearer ${token}` } });
+    },
 
-  async getOrderById(orderId) {
-    const token = Cookies.get('token');
-    return api.get(`/api/order/${orderId}`, { headers: { Authorization: `Bearer ${token}` } });
-  },
+    async getOrderById(orderId) {
+        const token = Cookies.get('token');
+        return api.get(`/api/order/${orderId}`, { headers: { Authorization: `Bearer ${token}` } });
+    },
 
-  async createOrder(shippingDetails) {
-    const token = Cookies.get('token');
-    return api.post('/api/order', shippingDetails, { headers: { Authorization: `Bearer ${token}` } });
-  },
-  
-  async updateOrderStatus(orderId, status) {
-    const token = Cookies.get('token');
-    return api.put(`/api/order/${orderId}`, { Status: status }, { headers: { Authorization: `Bearer ${token}` } });
-  },
+    async createOrder(shippingDetails) {
+        const token = Cookies.get('token');
+        return api.post('/api/order', shippingDetails, { headers: { Authorization: `Bearer ${token}` } });
+    },
+
+    async updateOrderStatus(orderId, status) {
+        const token = Cookies.get('token');
+        return api.put(`/api/order/${orderId}`, { Status: status }, { headers: { Authorization: `Bearer ${token}` } });
+    },
 
 
 }
