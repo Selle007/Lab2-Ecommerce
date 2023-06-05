@@ -38,7 +38,7 @@ namespace backend.Controllers
             {
                 return Unauthorized("Invalid authorization header");
             }
-     
+
             var token = authHeader.Substring("Bearer ".Length).Trim();
             var tokenHandler = new JwtSecurityTokenHandler();
             var jwtToken = tokenHandler.ReadJwtToken(token);
@@ -54,7 +54,7 @@ namespace backend.Controllers
             {
                 return NotFound("Cart not found");
             }
-      
+
 
             var orderItems = cart.Items.Select(cartItem => new Item
             {
