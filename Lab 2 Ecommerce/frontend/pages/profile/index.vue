@@ -28,7 +28,7 @@
                                         </div>
 
 
-                                        <button
+                                        <button @click="editProfile(user.id)"
                                             class="block w-full rounded bg-emerald-600 p-2 text-sm font-medium transition hover:scale-105 text-white">
                                             Edit User </button>
                                         
@@ -104,9 +104,10 @@ export default {
                 console.error('Error retrieving user profile:', error);
             }
         },
-        editProfile() {
-            // Handle the logic for editing the user profile
-        },
+        editProfile: function (id) {
+      this.$router.push(`/profile/${id}`);
+
+    },
         getAuthToken() {
             // Get the authentication token from cookies or any other storage mechanism
             // Return the token if it exists, otherwise return null

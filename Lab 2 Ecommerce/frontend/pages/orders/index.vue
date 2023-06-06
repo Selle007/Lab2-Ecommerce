@@ -66,7 +66,7 @@
               </td>
               <td class="whitespace-nowrap px-4 py-2">
                 <button href="#" @click="viewOrder(order.id)"
-                  class="inline-block rounded bg-indigo-600 px-4 py-2 text-xs font-medium text-white hover:bg-indigo-700">
+                  class="inline-block rounded bg-emerald-600 px-4 py-2 text-xs font-medium text-white hover:bg-emerald-700">
                   View
                 </button>
               </td>

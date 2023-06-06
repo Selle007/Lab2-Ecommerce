@@ -2,8 +2,8 @@
     <div>
         <NuxtLayout name="admin">
             <template #header></template>
-            <section class="bg-gray-100 p-3 sm:p-5 w-screen">
-                <div class="max-w-screen-xl px-4 lg:px-12">
+            <section class=" p-3 sm:p-5 w-max h-full">
+        <div class="max-w-screen-xl px-4 lg:px-12">
                     <!-- Start coding here -->
                     <div class="bg-white relative shadow-md sm:rounded-lg overflow-hidden">
                         <div

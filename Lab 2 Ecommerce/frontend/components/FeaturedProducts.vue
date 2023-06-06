@@ -13,6 +13,7 @@
 
 
             </ul>
+            <Loading v-if="Products<1"/>
         </div>
     </section>
 </template>

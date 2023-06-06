@@ -60,11 +60,50 @@
 </template>
 
 <script>
+import api from '@/services/api'
 export default {
   head() {
     return {
       layout: false,
     }
+  },
+  data(){
+    return{
+      Products:[],
+      Orders:[],
+      Users:[],
+    }
+  },
+  async mounted(){
+    try {
+      const response = await api.getProducts()
+      this.Products = response.data
+    } catch (error) {
+      console.error(error)
+    }
+    try {
+      const response = await api.getOrders()
+      this.Orders = response.data
+    } catch (error) {
+      console.error(error)
+    }
+    try {
+      const response = await api.getUsers()
+      this.Users = response.data
+    } catch (error) {
+      console.error(error)
+    }
+  },
+  computed: {
+    orderCount() {
+      return this.Orders.length;
+    },
+    productCount() {
+      return this.Products.length;
+    },
+    userCount() {
+      return this.Users.length;
+    },
   },
 
 }
