@@ -7,6 +7,7 @@ using backend.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 
@@ -130,75 +131,80 @@ public class AccountController : ControllerBase
     }
 
 
-[Authorize(Roles = "Admin")]
     [HttpGet("users")]
-    public IActionResult GetUsers()
+    public async Task<IActionResult> GetUsers()
     {
-        var users = _userManager.Users.Select(u => new
+        var users = await _userManager.Users.ToListAsync();
+
+        var usersResponse = users.Select(user => new
         {
-            u.Id,
-            u.UserName,
-            u.Email
+            user.Id,
+            user.UserName,
+            user.Email,
+            Roles = _userManager.GetRolesAsync(user).Result.FirstOrDefault()
         }).ToList();
 
-        return Ok(users);
+        return Ok(usersResponse);
     }
 
-    [Authorize(Roles = "Admin")]
-    [HttpPost("make-admin")]
-    public async Task<IActionResult> MakeAdmin(string userId)
+    [HttpPut("userRole/{userId}")]
+    public async Task<IActionResult> UpdateUserRole(string userId)
+    {
+        try
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            var roles = await _userManager.GetRolesAsync(user);
+            var currentRole = roles.Count > 0 ? roles[0] : null;
+
+            if (currentRole == "User")
+            {
+                await _userManager.RemoveFromRoleAsync(user, "User");
+                await _userManager.AddToRoleAsync(user, "Admin");
+            }
+            else if (currentRole == "Admin")
+            {
+                await _userManager.RemoveFromRoleAsync(user, "Admin");
+                await _userManager.AddToRoleAsync(user, "User");
+            }
+
+            return Ok(new { message = "User role updated successfully!", user });
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex);
+            return Ok();
+        }
+    }
+
+    [HttpPut("profile/{userId}")]
+    public async Task<IActionResult> UpdateUser(string userId, UpdateProfileDTO model)
     {
         var user = await _userManager.FindByIdAsync(userId);
-
         if (user == null)
         {
-            return BadRequest("User not found");
+            return NotFound("User not found");
         }
 
-        if (await _userManager.IsInRoleAsync(user, "Admin"))
-        {
-            return BadRequest("User is already an admin");
-        }
+        user.UserName = model.UserName;
+        user.Email = model.Email;
 
-        var result = await _userManager.AddToRoleAsync(user, "Admin");
-
+        var result = await _userManager.UpdateAsync(user);
         if (!result.Succeeded)
         {
             return BadRequest(result.Errors);
         }
 
-        return Ok();
-    }
-
-    [Authorize(Roles = "Admin")]
-    [HttpPost("remove-admin")]
-    public async Task<IActionResult> RemoveAdmin(string userId)
-    {
-        var user = await _userManager.FindByIdAsync(userId);
-
-        if (user == null)
-        {
-            return BadRequest("User not found");
-        }
-
-        if (!await _userManager.IsInRoleAsync(user, "Admin"))
-        {
-            return BadRequest("User is not an admin");
-        }
-
-        var result = await _userManager.RemoveFromRoleAsync(user, "Admin");
-
-        if (!result.Succeeded)
-        {
-            return BadRequest(result.Errors);
-        }
-
-        return Ok();
+        return Ok(new { message = "User updated successfully!", user });
     }
 
 
-    [Authorize(Roles = "Admin")]
-    [HttpPost("delete-user")]
+
+    [HttpDelete("users/{userId}")]
     public async Task<IActionResult> DeleteUser(string userId)
     {
         var user = await _userManager.FindByIdAsync(userId);

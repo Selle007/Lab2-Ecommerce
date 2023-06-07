@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using backend.DTO;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace backend.Controllers
 {
@@ -21,11 +22,13 @@ namespace backend.Controllers
 
         private readonly IMongoCollection<Product> _products;
         private readonly IWebHostEnvironment _hostEnvironment;
+        private readonly IMongoCollection<Review> _reviews;
 
         public ProductsController(IMongoClient client, IWebHostEnvironment hostEnvironment)
         {
             var database = client.GetDatabase("Lab2");
             _products = database.GetCollection<Product>("products");
+            _reviews = database.GetCollection<Review>("reviews");
             _hostEnvironment = hostEnvironment;
         }
         [AllowAnonymous]
@@ -43,8 +46,8 @@ namespace backend.Controllers
                 return StatusCode(500, $"Internal server error: {ex}");
             }
         }
-        [AllowAnonymous]
 
+        [AllowAnonymous]
         [HttpGet("{id:length(24)}", Name = "GetProduct")]
         public async Task<ActionResult<Product>> GetById(string id)
         {
@@ -64,22 +67,7 @@ namespace backend.Controllers
                 return StatusCode(500, $"Internal server error: {ex}");
             }
         }
-        /*
-        [Authorize(Roles = "Admin")]
-        [HttpPost]
-        public async Task<ActionResult<Product>> Post([FromBody] Product product)
-        {
-            try
-            {
-                product.Id = ObjectId.GenerateNewId().ToString();
-                await _products.InsertOneAsync(product);
-                return CreatedAtRoute("GetProduct", new { id = product.Id }, product);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, $"Internal server error: {ex}");
-            }
-        }*/
+       
         [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> Post([FromForm] ProductDTO productDto)
@@ -133,8 +121,6 @@ namespace backend.Controllers
             }
         }
 
-
-
         [Authorize(Roles = "Admin")]
         [HttpPut("{id:length(24)}")]
         public async Task<IActionResult> Put(string id, [FromBody] Product product)
@@ -157,6 +143,7 @@ namespace backend.Controllers
                 return StatusCode(500, $"Internal server error: {ex}");
             }
         }
+
         [Authorize(Roles = "Admin")]
         [HttpDelete("{id:length(24)}")]
         public async Task<IActionResult> Delete(string id)
@@ -188,6 +175,49 @@ namespace backend.Controllers
                 var filter = Builders<Product>.Filter.Regex("Name", new BsonRegularExpression(query, "i"));
                 var searchResults = await _products.Find(filter).ToListAsync();
                 return searchResults;
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex}");
+            }
+        }
+        [AllowAnonymous]
+        [HttpPost("reviews")]
+        public async Task<IActionResult> AddReview([FromForm] Review review)
+        {
+            try
+            {
+                var product = await _products.Find(p => p.Id == review.ProductId).FirstOrDefaultAsync();
+                if (product == null)
+                {
+                    return NotFound("Product not found");
+                }
+                review.Id = ObjectId.GenerateNewId().ToString();
+                review.ProductId = review.ProductId;
+                review.CreatedAt = DateTime.UtcNow;
+
+                await _reviews.InsertOneAsync(review);
+                return Ok("Success");
+
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex}");
+            }
+        }
+        [AllowAnonymous]
+        [HttpGet("reviews/{productId}")]
+        public async Task<IActionResult> GetReviews(string productId)
+        {
+            try
+            {
+                var reviews = await _reviews
+                    .Find(r => r.ProductId == productId)
+                    .SortByDescending(r => r.CreatedAt)
+                    .Limit(3)
+                    .ToListAsync();
+
+                return Ok(reviews);
             }
             catch (Exception ex)
             {

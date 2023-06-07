@@ -51,9 +51,9 @@ export default {
         let token = Cookies.get('token');
         return api.post(`/api/account/makeAdmin/${userId}`, null, { headers: { Authorization: `Bearer ${token}` } })
     },
-    async updateProfile(updatedData) {
+    async updateProfile(userId, updatedData) {
         let token = Cookies.get('token');
-        return api.put('/api/account/profile', updatedData, { headers: { Authorization: `Bearer ${token}` } });
+        return api.put(`/api/account/profile/${userId}`, updatedData, { headers: { Authorization: `Bearer ${token}` } });
     },
     async getUsers() {
         let token = Cookies.get('token');
@@ -61,12 +61,19 @@ export default {
     },
     async updateUserRole(userId) {
         let token = Cookies.get('token');
-        return api.post('/api/account/updateUserRole', { userId }, { headers: { Authorization: `Bearer ${token}` } });
+        return api.put(`/api/account/userRole/${userId}`, { headers: { Authorization: `Bearer ${token}` } });
     },
     async getProfile() {
         let token = Cookies.get('token');
         return api.get('/api/account/profile', { headers: { Authorization: `Bearer ${token}` } });
     },
+    async deleteUser(userId) {
+        const token = Cookies.get('token');
+        return api.delete(`/api/account/users/${userId}`, { headers: { Authorization: `Bearer ${token}` } });
+    },
+
+
+
     // Categories
     async getCategories() {
         let token = Cookies.get('token');
@@ -161,6 +168,34 @@ export default {
     async updateOrderStatus(orderId, status) {
         const token = Cookies.get('token');
         return api.put(`/api/order/${orderId}`, { Status: status }, { headers: { Authorization: `Bearer ${token}` } });
+    },
+
+
+    // Stripe
+    async addStripeCustomer(customer) {
+        const token = Cookies.get('token');
+        return api.post('/api/stripe/customer/add', customer);
+    },
+
+    async addStripePayment(payment) {
+        const token = Cookies.get('token');
+        return api.post('/api/stripe/payment/add', payment);
+    },
+
+    // Reviews
+    async createReview(formData) {
+        const token = Cookies.get('token');
+        return api.post(`/api/products/reviews`, formData, { headers: { Authorization: `Bearer ${token}` } });
+    },
+
+    async getProductReviews(productId) {
+        const token = Cookies.get('token');
+        return api.get(`/api/products/reviews/${productId}`, { headers: { Authorization: `Bearer ${token}` } });
+    },
+
+    async getTopProductReviews(productId) {
+        const token = Cookies.get('token');
+        return api.get(`/api/products/${productId}`, { headers: { Authorization: `Bearer ${token}` } });
     },
 
 

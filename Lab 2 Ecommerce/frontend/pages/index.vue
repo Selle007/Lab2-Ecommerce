@@ -32,12 +32,14 @@
         </div>
       </section>
 
+      
       <FeaturedProducts />
 
       <Reviews />
       <template #footer></template>
     </NuxtLayout>
-</div></template>
+  </div>
+</template>
   
 <script>
 export default {

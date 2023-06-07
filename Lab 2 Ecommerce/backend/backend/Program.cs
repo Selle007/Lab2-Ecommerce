@@ -10,6 +10,9 @@ using Swashbuckle.AspNetCore.Filters;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.AspNetCore.StaticFiles;
 using backend;
+using Stripe;
+using backend.Contracts;
+using backend.Application;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -32,6 +35,7 @@ builder.Services.AddSwaggerGen(options => {
     options.OperationFilter<SecurityRequirementsOperationFilter>();
 
 });
+
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
@@ -88,8 +92,8 @@ builder.Services.AddCors(options =>
     });
 });
 
-// Add Stripe Infrastructure
 builder.Services.AddStripeInfrastructure(builder.Configuration);
+
 
 
 var app = builder.Build();
