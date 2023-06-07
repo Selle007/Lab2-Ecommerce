@@ -7,13 +7,13 @@
         <div class="mx-auto max-w-screen-xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8">
           <div class="mx-auto max-w-3xl">
             <header class="text-center">
-              <h1 class="text-xl font-bold text-gray-900 sm:text-3xl">Your Cart</h1>
+              <h1 class="text-xl font-bold text-gray-900 sm:text-3xl">Your Wishlist</h1>
             </header>
-            <!-- Cart items -->
+            <!-- Wishlist items -->
             <div>
-              <ul class="space-y-4 mt-4">
+              <ul class="space-y-4">
               
-                <li v-for="item in cartItems"
+                <li v-for="item in wishlistItems"
               :key="item.id">
                   <a :href="`/products/${item.productId}`"
                     class="flex items-center gap-4 border rounded-lg px-4 py-3 shadow-sm">
@@ -33,12 +33,7 @@
                       </dl>
                     </div>
                     <div class="flex flex-1 items-center justify-end gap-2">
-                      <form>
-                        <label for="Line1Qty" class="sr-only"> {{ item.quantity }} </label>
-                        <input type="number" min="1" :value="item.quantity" id="Line1Qty"
-                          class="h-8 w-12 rounded border-gray-200 bg-gray-50 p-0 text-center text-xs text-gray-600 [-moz-appearance:_textfield] focus:outline-none [&::-webkit-outer-spin-button]:m-0 [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:m-0 [&::-webkit-inner-spin-button]:appearance-none">
-                      </form>
-                      <button class="text-gray-600 transition hover:text-red-600" @click.prevent="removeItemFromCart(item.productId)">
+                      <button class="text-gray-600 transition hover:text-red-600" @click.prevent="removeItemFromWishlist(item.productId)">
                         <span class="sr-only">Remove item</span>
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                           stroke="currentColor" class="h-4 w-4">
@@ -57,15 +52,9 @@
                   <dl class="space-y-0.5 text-sm text-gray-700">
                     <div class="flex justify-end !text-base font-medium">
                       <dt class="text-2xl">Total:</dt>
-                      <dd class="ml-5 text-2xl">{{ cartTotal }}&euro;</dd>
+                      <dd class="ml-5 text-2xl">{{ wishlistTotal }}&euro;</dd>
                     </div>
                   </dl>
-                  <div class="flex justify-end">
-                    <a href="/checkout"
-                      class="block rounded bg-emerald-700 px-5 py-3 text-sm text-gray-100 transition hover:bg-emerald-800 text-white">
-                      Checkout
-                    </a>
-                  </div>
                 </div>
               </div>
             </div>
@@ -87,14 +76,14 @@ export default {
   },
   data(){
     return {
-      cartItems:[],
+      wishlistItems:[],
       Products:[],
     }
   },
   async mounted() {
         try {
-            const response = await api.getCart() // wait for the Promise to resolve
-            this.cartItems = response.data
+            const response = await api.getWishlist() // wait for the Promise to resolve
+            this.wishlistItems = response.data
             this.loading = false;
         } catch (error) {
             console.error(error)
@@ -110,8 +99,8 @@ export default {
         }
     },
     computed: {
-    cartTotal() {
-      return this.cartItems.reduce((total, item) => {
+    wishlistTotal() {
+      return this.wishlistItems.reduce((total, item) => {
         const product = this.Products.find((p) => p.id === item.productId);
         if (product) {
           return total + (product.price * item.quantity);
@@ -122,9 +111,9 @@ export default {
     }
   },
   methods:{
-    async removeItemFromCart(productId) {
+    async removeItemFromWishlist(productId) {
       try {
-        const response = await api.removeFromCart(productId);
+        const response = await api.removeFromWishlist(productId);
         window.location.reload();
         console.log(response); // log the response for debugging
       } catch (error) {

@@ -198,6 +198,21 @@ export default {
         return api.get(`/api/products/${productId}`, { headers: { Authorization: `Bearer ${token}` } });
     },
 
+    // Get cart items
+    async getWishlist() {
+        const token = Cookies.get('token');
+        return api.get('/api/cart/items', { headers: { Authorization: `Bearer ${token}` } });
+    },
+    // Add item to cart
+    async addToWishlist(cartItem) {
+        const token = Cookies.get('token');
+        return api.post('/api/cart/items', cartItem, { headers: { Authorization: `Bearer ${token}` } });
+    },
+    // Remove item from cart
+    async removeFromWishlist(productId) {
+        const token = Cookies.get('token');
+        return api.delete(`/api/cart/items/${productId}`, { headers: { Authorization: `Bearer ${token}` } });
+    },
 
 
 }

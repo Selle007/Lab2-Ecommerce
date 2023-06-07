@@ -37,6 +37,11 @@
                                                 class="block w-full rounded border border-emerald-600 p-2 mt-2 text-sm font-medium transition hover:scale-105 text-emerald">
                                                 View Orders </button>
                                         </a>
+                                        <a href="/wishlist">
+                                            <button
+                                                class="block w-full rounded border border-emerald-600 p-2 mt-2 text-sm font-medium transition hover:scale-105 text-emerald">
+                                                Wishlist </button>
+                                        </a>
 
                                     </div>
                                 </div>

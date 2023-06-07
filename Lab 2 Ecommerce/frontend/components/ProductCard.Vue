@@ -1,6 +1,6 @@
 <template>
   <a :href="`/products/${product.id}`" class="group relative block overflow-hidden">
-    <button
+    <button @click.prevent="addItemToWishlist(product.id, product.price)"
       class="absolute right-4 top-4 z-10 rounded-full bg-white p-1.5 text-gray-900 transition hover:text-gray-900/75">
       <span class="sr-only">Wishlist</span>
 
@@ -45,7 +45,14 @@ export default {
       try {
         const cartItem = { ProductId: productId, Quantity: 1, Price: price };
         const response = await api.addToCart(cartItem);
-        console.log(response); // log the response for debugging
+      } catch (error) {
+        console.log(error); // log the error for debugging
+      }
+    },
+    async addItemToWishlist(productId, price) {
+      try {
+        const wishlistItem = { ProductId: productId, Quantity: 1, Price: price };
+        const response = await api.addToWishlist(wishlistItem);
       } catch (error) {
         console.log(error); // log the error for debugging
       }
