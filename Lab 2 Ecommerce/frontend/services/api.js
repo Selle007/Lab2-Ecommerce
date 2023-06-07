@@ -182,5 +182,22 @@ export default {
         return api.post('/api/stripe/payment/add', payment);
     },
 
+    // Reviews
+    async createReview(formData) {
+        const token = Cookies.get('token');
+        return api.post(`/api/products/reviews`, formData, { headers: { Authorization: `Bearer ${token}` } });
+    },
+
+    async getProductReviews(productId) {
+        const token = Cookies.get('token');
+        return api.get(`/api/products/reviews/${productId}`, { headers: { Authorization: `Bearer ${token}` } });
+    },
+
+    async getTopProductReviews(productId) {
+        const token = Cookies.get('token');
+        return api.get(`/api/products/${productId}`, { headers: { Authorization: `Bearer ${token}` } });
+    },
+
+
 
 }
