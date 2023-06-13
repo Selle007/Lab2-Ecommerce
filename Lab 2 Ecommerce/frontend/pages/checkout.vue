@@ -131,13 +131,15 @@
                                             <label for="cardHolderName" class="sr-only"> Card Holder Name </label>
 
                                             <input type="text" id="cardHolderName" placeholder="Card Holder Name"
-                                                class="relative mt-1 w-full rounded-t-md border shadow-md focus:z-10 sm:text-sm"  v-model="customer.name"/>
+                                                class="relative mt-1 w-full rounded-t-md border shadow-md focus:z-10 sm:text-sm"
+                                                v-model="customer.name" />
                                         </div>
                                         <div>
                                             <label for="CardNumber" class="sr-only"> Card Number </label>
 
                                             <input type="text" id="CardNumber" placeholder="Card Number"
-                                                class="relative w-full border shadow-md focus:z-10 sm:text-sm"  v-model="customer.creditCard.cardNumber"/>
+                                                class="relative w-full border shadow-md focus:z-10 sm:text-sm"
+                                                v-model="customer.creditCard.cardNumber" />
                                         </div>
 
                                         <div class="flex">
@@ -145,20 +147,23 @@
                                                 <label for="CardExpiry" class="sr-only"> Card Expiry </label>
 
                                                 <input type="text" id="CardExpiry" placeholder="Expiry Date"
-                                                    class="relative w-full rounded-es-md border shadow-md focus:z-10 sm:text-sm"  v-model="customer.creditCard.expirationMonth"/>
+                                                    class="relative w-full rounded-es-md border shadow-md focus:z-10 sm:text-sm"
+                                                    v-model="customer.creditCard.expirationMonth" />
                                             </div>
                                             <div class="flex-1">
                                                 <label for="CardExpiry" class="sr-only"> Card Expiry </label>
 
                                                 <input type="text" id="CardExpiry" placeholder="Expiry Date"
-                                                    class="relative w-full  shadow-md focus:z-10 sm:text-sm"  v-model="customer.creditCard.expirationYear"/>
+                                                    class="relative w-full  shadow-md focus:z-10 sm:text-sm"
+                                                    v-model="customer.creditCard.expirationYear" />
                                             </div>
 
                                             <div class="-ms-px flex-1">
                                                 <label for="CardCVC" class="sr-only"> Card CVC </label>
 
                                                 <input type="text" id="CardCVC" placeholder="CVC"
-                                                    class="relative w-full rounded-ee-md border shadow-md focus:z-10 sm:text-sm"  v-model="customer.creditCard.cvc"/>
+                                                    class="relative w-full rounded-ee-md border shadow-md focus:z-10 sm:text-sm"
+                                                    v-model="customer.creditCard.cvc" />
                                             </div>
                                         </div>
                                     </div>
@@ -259,34 +264,52 @@ export default {
                         cvc: this.customer.creditCard.cvc,
                     },
                 });
-                alert('Customer created successfully!');
 
-                const paymentResponse = await api.addStripePayment({
-                    customerId: customerResponse.data.customerId,
-                    receiptEmail: this.shippingDetails.email,
-                    description: "Elektronix Online Store G.O.A.T",
-                    currency:"EUR",
-                    amount: this.cartTotal,
-                });
-                alert('Payment created successfully!');
+                if (customerResponse.status === 200) {
+                    const paymentResponse = await api.addStripePayment({
+                        customerId: customerResponse.data.customerId,
+                        receiptEmail: this.shippingDetails.email,
+                        description: "Elektronix Online Store G.O.A.T",
+                        currency: "EUR",
+                        amount: this.cartTotal*100,
+                    });
 
-                const orderResponse = await api.createOrder({
-                    Name: this.shippingDetails.name,
-                    Surname: this.shippingDetails.surname,
-                    City: this.shippingDetails.city,
-                    Address: this.shippingDetails.address,
-                    Phone: this.shippingDetails.phone,
-                    Email: this.shippingDetails.email,
-                    ZipCode: this.shippingDetails.zipCode,
-                    Country: this.shippingDetails.country,
-                });
-                this.cartItems = [];
-                alert('Order placed successfully!');
-                this.$router.push(`/`);
+                    if (paymentResponse.status === 200) {
+                        const orderResponse = await api.createOrder({
+                            Name: this.shippingDetails.name,
+                            Surname: this.shippingDetails.surname,
+                            City: this.shippingDetails.city,
+                            Address: this.shippingDetails.address,
+                            Phone: this.shippingDetails.phone,
+                            Email: this.shippingDetails.email,
+                            ZipCode: this.shippingDetails.zipCode,
+                            Country: this.shippingDetails.country,
+                        });
+
+                        if (orderResponse.status === 200) {
+                            this.cartItems = [];
+                            this.$router.push(`/thankyou`);
+                        } else {
+                            // Handle order creation failure
+                            console.error('Failed to create order:', orderResponse.error);
+                            // Display an error message or take appropriate action
+                        }
+                    } else {
+                        // Handle payment failure
+                        console.error('Failed to add Stripe payment:', paymentResponse.error);
+                        // Display an error message or take appropriate action
+                    }
+                } else {
+                    // Handle customer creation failure
+                    console.error('Failed to add Stripe customer:', customerResponse.error);
+                    // Display an error message or take appropriate action
+                }
             } catch (error) {
-                console.error(error);
-                alert('Failed to place the order. Please try again.');
+                // Handle any other exceptions or network errors
+                console.error('An error occurred:', error);
+                // Display an error message or take appropriate action
             }
+
         },
         getProductName(productId) {
             const product = this.Products.find((p) => p.id === productId);

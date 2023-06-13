@@ -104,13 +104,13 @@ namespace backend.Controllers
         }
 
 
-        // Get all orders
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Order>>> GetAllOrders()
         {
             var orders = await _orders.Find(_ => true).ToListAsync();
             return Ok(orders);
         }
+
 
         // Get orders for authenticated user
         [HttpGet("userOrders")]

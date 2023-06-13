@@ -13,7 +13,7 @@ export default defineNuxtRouteMiddleware((to, from) => {
       isAdmin = true;
     }
     if (to.path === "/dashboard" && !isAdmin) {
-      return redirect("/a");
+      return redirect("/");
     }
   }
 })
